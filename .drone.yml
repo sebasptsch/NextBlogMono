@@ -72,13 +72,13 @@ steps:
   - name: Build
     commands:
       - docker build -f keystone.Dockerfile -t ${DRONE_COMMIT} . --target production --label org.opencontainers.image.revision=${DRONE_COMMIT} --label org.opencontainers.image.source=${DRONE_REMOTE_URL} --label org.opencontainers.image.url=${DRONE_REPO} --build-arg GRAPHQL_ENDPOINT="https://cms.sebasptsch.dev/api/graphql"
-  # - name: Tag
-  #   commands:
-  #     - docker tag ${DRONE_COMMIT} ghcr.io/sebasptsch/nextblog:latest
-  #     - docker tag ${DRONE_COMMIT} ghcr.io/sebasptsch/nextblog:latest
-  - name: Push
+  - name: Push Latest
     commands:
+      - docker tag ${DRONE_COMMIT} ghcr.io/sebasptsch/nextblog:latest
       - docker push ghcr.io/sebasptsch/nextblog:latest
+  - name: Push Commit
+    commands:
+      - docker tag ${DRONE_COMMIT} ghcr.io/sebasptsch/nextblog:${DRONE_COMMIT}
       - docker push ghcr.io/sebasptsch/nextblog:${DRONE_COMMIT}
   # - name: Build and Publish
   #   image: plugins/docker
