@@ -81,6 +81,8 @@ steps:
     environment:
       GRAPHQL_ENDPOINT: https://cms.sebasptsch.dev/api/graphql
       COMMIT: $DRONE_COMMIT
+      SESSION_SECRET:
+        from_secret: SESSION_SECRET
     settings:
       playbook: .ansible/playbook.yml
       ssh_extra_args:
