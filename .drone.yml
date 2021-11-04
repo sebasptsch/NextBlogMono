@@ -49,6 +49,9 @@ steps:
       repo: ghcr.io/sebasptsch/nextcms
       registry: ghcr.io
       auto_tag: true
+      dockerfile: keystone/Dockerfile
+      build_args:
+        - GRAPHQL_ENDPOINT=https://cms.sebasptsch.dev/api/graphql
   - name: Rebuild Cache
     image: drillster/drone-volume-cache
     pull: if-not-exists
@@ -92,6 +95,7 @@ steps:
     environment:
       PRISMA_CLI_QUERY_ENGINE_TYPE: binary
       PRISMA_CLIENT_ENGINE_TYPE: binary
+      GRAPHQL_ENDPOINT: https://cms.sebasptsch.dev/api/graphql
     commands:
       # - apk add --no-cache libc6-compat
       - apt-get update
@@ -119,6 +123,9 @@ steps:
       repo: ghcr.io/sebasptsch/nextcms
       registry: ghcr.io
       auto_tag: true
+      dockerfile: frontend/Dockerfile
+      build_args:
+        - GRAPHQL_ENDPOINT=https://cms.sebasptsch.dev/api/graphql
   - name: Rebuild Cache
     image: drillster/drone-volume-cache
     pull: if-not-exists
