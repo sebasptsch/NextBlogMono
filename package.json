@@ -7,6 +7,7 @@
     ],
     "scripts": {
         "dev:keystone": "yarn workspace keystone keystone-next dev",
+        "migrate:keystone": "yarn workspace keystone keystone-next prisma migrate deploy",
         "start:keystone": "yarn workspace keystone keystone-next start",
         "build:keystone": "yarn workspace keystone keystone-next build",
         "build:frontend": "yarn workspace frontend next build",
