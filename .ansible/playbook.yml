@@ -24,7 +24,7 @@
         pull: true
         recreate: true
         env:
-          - GRAPHQL_ENDPOINT={{ lookup('env', 'GRAPHQL_ENDPOINT') }}
+          GRAPHQL_ENDPOINT: {{ lookup('env', 'GRAPHQL_ENDPOINT') }}
         networks:
           - name: blog
         ports:
