@@ -1,0 +1,17 @@
+---
+version: "3"
+services:
+  frontend:
+    build:
+      context: ./
+      dockerfile: frontend.Dockerfile
+    env_file: ./frontend/.env.local
+    ports:
+      - "3001:3000"
+  cms:
+    build:
+      context: ./
+      dockerfile: keystone.Dockerfile
+    ports:
+      - "3002"
+    env_file: ./keystone/.env.local

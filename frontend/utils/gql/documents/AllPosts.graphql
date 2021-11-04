@@ -1,0 +1,15 @@
+query AllPosts {
+  posts(orderBy: [{ published_at: desc }]) {
+    id
+    title
+    slug
+    summary
+    published_at
+    readingtime
+    tags {
+      id
+      name
+      slug
+    }
+  }
+}

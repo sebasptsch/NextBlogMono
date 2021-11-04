@@ -1,0 +1,26 @@
+{
+    "name": "keystone-mono",
+    "private": true,
+    "workspaces": [
+        "keystone",
+        "frontend"
+    ],
+    "scripts": {
+        "postinstall": "yarn workspace keystone keystone-next postinstall",
+        "dev:keystone": "yarn workspace keystone keystone-next dev",
+        "start:keystone": "yarn workspace keystone keystone-next start",
+        "build:keystone": "yarn workspace keystone keystone-next build",
+        "build:frontend": "yarn workspace frontend next build",
+        "dev:frontend": "yarn workspace frontend next dev",
+        "start:frontend": "yarn workspace frontend next start",
+        "generate:frontend": "yarn workspace frontend graphql-codegen --config codegen.yml",
+        "dev": "concurrently -i -n \"NEXTJS,KEYSTONE\" \"yarn dev:nextjs\" \"yarn dev:keystone\"",
+        "build": "concurrently -n \"NEXTJS,KEYSTONE\" \"yarn build:frontend\" \"yarn build:keystone\""
+    },
+    "dependencies": {
+        "concurrently": "^6.3.0"
+    },
+    "resolutions": {
+        "graphql": "^15.6.1"
+    }
+}
