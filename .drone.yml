@@ -23,6 +23,7 @@ steps:
       repo: ghcr.io/sebasptsch/nextcms
       tags:
         - latest
+        - $DRONE_COMMIT
       registry: ghcr.io
       auto_tag: true
       dockerfile: keystone.Dockerfile
@@ -57,6 +58,7 @@ steps:
       auto_tag: true
       tags:
         - latest
+        - $DRONE_COMMIT
       dockerfile: frontend.Dockerfile
       build_args:
         - GRAPHQL_ENDPOINT=https://cms.sebasptsch.dev/api/graphql
