@@ -10,6 +10,8 @@
         image: ghcr.io/sebasptsch/nextcms:{{ lookup('env', 'DRONE_COMMIT') }}
         pull: true
         recreate: true
+        volumes:
+          - db:/app/keystone/config
         env:
           GRAPHQL_ENDPOINT: lookup('env', 'GRAPHQL_ENDPOINT')
         networks:
