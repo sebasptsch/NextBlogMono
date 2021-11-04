@@ -16,7 +16,8 @@ steps:
           - pull_request
     pull: if-not-exists
     settings:
-      # cache_from: ghcr.io/sebasptsch/nextblog
+      cache_from: ghcr.io/sebasptsch/nextcms
+      target: production
       username:
         from_secret: github_username
       password:
@@ -46,7 +47,8 @@ steps:
           - pull_request
     pull: if-not-exists
     settings:
-      # cache_from: ghcr.io/sebasptsch/nextblog
+      cache_from: ghcr.io/sebasptsch/nextblog
+      target: production
       username:
         from_secret: github_username
       password:
