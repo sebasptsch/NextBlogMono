@@ -3,31 +3,6 @@ name: Build and Publish CMS
 type: docker
 
 steps:
-  - name: Restore Cache
-    image: drillster/drone-volume-cache
-    pull: if-not-exists
-    volumes:
-      - name: cache
-        path: /cache
-    settings:
-      restore: true
-      mount:
-        - ./node_modules
-        - ./keystone/.keystone/admin/.next/cache
-  - name: Build
-    pull: if-not-exists
-    image: node:lts-buster-slim
-    depends_on:
-      - "Restore Cache"
-    environment:
-      PRISMA_CLI_QUERY_ENGINE_TYPE: binary
-      PRISMA_CLIENT_ENGINE_TYPE: binary
-    commands:
-      # - apk add --no-cache libc6-compat
-      - apt-get update
-      - apt-get install openssl -y
-      - yarn install --frozen-lockfile
-      - yarn build:keystone
   - name: Publish
     image: plugins/docker
 
@@ -54,61 +29,15 @@ steps:
       dockerfile: keystone/Dockerfile
       build_args:
         - GRAPHQL_ENDPOINT=https://cms.sebasptsch.dev/api/graphql
-  - name: Rebuild Cache
-    image: drillster/drone-volume-cache
-    pull: if-not-exists
-    depends_on:
-      - "Build"
-    volumes:
-      - name: cache
-        path: /cache
-    settings:
-      rebuild: true
-      mount:
-        - ./node_modules
-        - ./keystone/.keystone/admin/.next/cache
 
-volumes:
-  - name: cache
-    host:
-      path: /tmp/cache
 ---
 kind: pipeline
 name: Build and Publish Frontend
 type: docker
 
 steps:
-  - name: Restore Cache
-    image: drillster/drone-volume-cache
-    pull: if-not-exists
-    volumes:
-      - name: cache
-        path: /cache
-    settings:
-      restore: true
-      mount:
-        - ./node_modules
-        - ./frontend/.next/cache
-  - name: Build
-    pull: if-not-exists
-    image: node:lts-buster-slim
-    depends_on:
-      - "Restore Cache"
-    environment:
-      PRISMA_CLI_QUERY_ENGINE_TYPE: binary
-      PRISMA_CLIENT_ENGINE_TYPE: binary
-      GRAPHQL_ENDPOINT: https://cms.sebasptsch.dev/api/graphql
-    commands:
-      # - apk add --no-cache libc6-compat
-      - apt-get update
-      - apt-get install openssl -y
-      - yarn install --frozen-lockfile
-      - yarn build:frontend
-  - name: Publish
+  - name: Build and Publish
     image: plugins/docker
-
-    depends_on:
-      - "Build"
     when:
       branch:
         - master
@@ -128,24 +57,6 @@ steps:
       dockerfile: frontend/Dockerfile
       build_args:
         - GRAPHQL_ENDPOINT=https://cms.sebasptsch.dev/api/graphql
-  - name: Rebuild Cache
-    image: drillster/drone-volume-cache
-    pull: if-not-exists
-    depends_on:
-      - "Build"
-    volumes:
-      - name: cache
-        path: /cache
-    settings:
-      rebuild: true
-      mount:
-        - ./node_modules
-        - ./frontend/.next/cache
-
-volumes:
-  - name: cache
-    host:
-      path: /tmp/cache
 # trigger:
 #   event:
 #     exclude:
