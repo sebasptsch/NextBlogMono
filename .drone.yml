@@ -21,11 +21,11 @@ steps:
       password:
         from_secret: github_token
       repo: ghcr.io/sebasptsch/nextcms
+      auto_tag: false
       tags:
         - latest
-        - $DRONE_COMMIT
+        - ${DRONE_COMMIT}
       registry: ghcr.io
-      auto_tag: true
       dockerfile: keystone.Dockerfile
 trigger:
   event:
@@ -41,6 +41,7 @@ steps:
     image: plugins/docker
     environment:
       GRAPHQL_ENDPOINT: https://cms.sebasptsch.dev/api/graphql
+      DRONE_COMMIT: $DRONE_COMMIT
     when:
       branch:
         - master
@@ -58,10 +59,10 @@ steps:
         from_secret: github_token
       repo: ghcr.io/sebasptsch/nextcms
       registry: ghcr.io
-      auto_tag: true
+      auto_tag: false
       tags:
         - latest
-        - $DRONE_COMMIT
+        - ${DRONE_COMMIT}
       dockerfile: frontend.Dockerfile
       build_args:
         - GRAPHQL_ENDPOINT=https://cms.sebasptsch.dev/api/graphql
