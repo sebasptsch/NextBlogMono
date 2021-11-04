@@ -24,7 +24,7 @@ steps:
         - latest
       registry: ghcr.io
       auto_tag: true
-      dockerfile: keystone/Dockerfile
+      dockerfile: keystone.Dockerfile
       build_args:
         - GRAPHQL_ENDPOINT=https://cms.sebasptsch.dev/api/graphql
 
@@ -55,7 +55,7 @@ steps:
       auto_tag: true
       tags:
         - latest
-      dockerfile: frontend/Dockerfile
+      dockerfile: frontend.Dockerfile
       build_args:
         - GRAPHQL_ENDPOINT=https://cms.sebasptsch.dev/api/graphql
 # trigger:

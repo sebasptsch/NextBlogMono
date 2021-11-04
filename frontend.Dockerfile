@@ -2,7 +2,9 @@ FROM node:lts-buster-slim as dependencies
 RUN apt-get update
 RUN apt-get install openssl -y
 WORKDIR /app
-COPY ../package.json ../yarn.lock ./package.json ./
+COPY ./package.json  ./
+COPY ./yarn.lock  ./
+COPY  ./frontend/package.json ./frontend/package.json
 RUN yarn install --frozen-lockfile
 
 FROM node:lts-buster-slim as builder
