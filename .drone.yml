@@ -14,7 +14,7 @@ steps:
     pull: if-not-exists
     settings:
       purge: false
-      cache_from: ghcr.io/sebasptsch/nextcms
+      # cache_from: ghcr.io/sebasptsch/nextcms
       target: production
       username:
         from_secret: github_username
