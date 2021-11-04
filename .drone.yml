@@ -71,7 +71,7 @@ steps:
       - docker pull ghcr.io/sebasptsch/nextblog
   - name: Build
     commands:
-      - docker build -f keystone.Dockerfile -t ${DRONE_COMMIT} . --pull=true --cache-from ghcr.io/sebasptsch/nextblog --target production --label org.opencontainers.image.revision=${DRONE_COMMIT} --label org.opencontainers.image.source=${DRONE_REMOTE_URL} --label org.opencontainers.image.url=${DRONE_REPO} --build-arg GRAPHQL_ENDPOINT="https://cms.sebasptsch.dev/api/graphql"
+      - docker build -f keystone.Dockerfile -t ${DRONE_COMMIT} . --target production --label org.opencontainers.image.revision=${DRONE_COMMIT} --label org.opencontainers.image.source=${DRONE_REMOTE_URL} --label org.opencontainers.image.url=${DRONE_REPO} --build-arg GRAPHQL_ENDPOINT="https://cms.sebasptsch.dev/api/graphql"
   # - name: Tag
   #   commands:
   #     - docker tag ${DRONE_COMMIT} ghcr.io/sebasptsch/nextblog:latest
