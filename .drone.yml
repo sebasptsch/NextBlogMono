@@ -27,7 +27,10 @@ steps:
       registry: ghcr.io
       auto_tag: true
       dockerfile: keystone.Dockerfile
-
+trigger:
+  event:
+    exclude:
+      - promote
 ---
 kind: pipeline
 name: Build and Publish Frontend
@@ -62,10 +65,10 @@ steps:
       dockerfile: frontend.Dockerfile
       build_args:
         - GRAPHQL_ENDPOINT=https://cms.sebasptsch.dev/api/graphql
-# trigger:
-#   event:
-#     exclude:
-#       - promote
+trigger:
+  event:
+    exclude:
+      - promote
 ---
 kind: pipeline
 type: docker
