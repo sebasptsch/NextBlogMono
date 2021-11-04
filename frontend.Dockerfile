@@ -1,6 +1,7 @@
 FROM node:lts-buster-slim
 WORKDIR /app
 # RUN apk add libc6-compat
+RUN apt-get update
 RUN apt-get install openssl -y
 COPY ./frontend/public ./frontend/public
 COPY  ./frontend/.next ./frontend/.next
