@@ -20,7 +20,6 @@ steps:
   - name: Tag
     commands:
       - docker tag ${DRONE_COMMIT} ghcr.io/sebasptsch/nextcms:latest
-      - docker tag ${DRONE_COMMIT} ghcr.io/sebasptsch/nextcms:${DRONE_COMMIT}
   - name: Push
     commands:
       - docker push ghcr.io/sebasptsch/nextcms
@@ -76,7 +75,6 @@ steps:
   - name: Tag
     commands:
       - docker tag ${DRONE_COMMIT} ghcr.io/sebasptsch/nextblog:latest
-      - docker tag ${DRONE_COMMIT} ghcr.io/sebasptsch/nextblog:${DRONE_COMMIT}
   - name: Push
     commands:
       - docker push ghcr.io/sebasptsch/nextblog
