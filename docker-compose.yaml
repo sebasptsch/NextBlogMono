@@ -2,16 +2,28 @@
 version: "3"
 services:
   frontend:
+    container_name: frontend
+    depends_on:
+      - cms
     build:
       context: ./
       dockerfile: frontend.Dockerfile
     env_file: ./frontend/.env.local
+    networks:
+      - blog
     ports:
       - "3001:3000"
   cms:
+    container_name: cms
     build:
       context: ./
       dockerfile: keystone.Dockerfile
     ports:
-      - "3002"
+      - "3002:3002"
     env_file: ./keystone/.env.local
+    networks:
+      - blog
+    volumes:
+      - ./keystone/config:/app/keystone/config
+networks:
+  blog:

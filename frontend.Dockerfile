@@ -5,7 +5,7 @@ WORKDIR /app
 COPY ./package.json  ./
 COPY ./yarn.lock  ./
 COPY  ./frontend/package.json ./frontend/package.json
-RUN yarn install --frozen-lockfile
+RUN yarn install --frozen-lockfile --production
 
 FROM node:lts-buster-slim as builder
 RUN apt-get update
@@ -26,7 +26,7 @@ COPY --from=builder ./frontend/public ./frontend/public
 COPY --from=builder ./frontend/.next ./frontend/.next
 COPY --from=builder ./node_modules ./node_modules
 COPY --from=builder ./package.json ./package.json
-# COPY --from=builder ./frontend/package.json ./frontend/package.json
+COPY --from=builder ./frontend/package.json ./frontend/package.json
 COPY --from=builder ./frontend/next.config.js ./frontend/next.config.js
 ENV GRAPHQL_ENDPOINT "$GRAPHQL_ENDPOINT"
 ENV NODE_ENV=production
