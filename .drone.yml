@@ -14,7 +14,7 @@ steps:
     pull: if-not-exists
     settings:
       purge: false
-      # cache_from: ghcr.io/sebasptsch/nextcms
+      cache_from: ghcr.io/sebasptsch/nextcms
       target: production
       username:
         from_secret: github_username
@@ -51,13 +51,13 @@ steps:
     pull: if-not-exists
     settings:
       purge: false
-      # cache_from: ghcr.io/sebasptsch/nextblog
+      cache_from: ghcr.io/sebasptsch/nextblog
       target: production
       username:
         from_secret: github_username
       password:
         from_secret: github_token
-      repo: ghcr.io/sebasptsch/nextcms
+      repo: ghcr.io/sebasptsch/nextblog
       registry: ghcr.io
       auto_tag: false
       tags:
