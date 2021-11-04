@@ -16,14 +16,14 @@ steps:
         - ./keystone/.keystone/admin/.next/cache
   - name: Build
     pull: if-not-exists
-    image: node:lts-alpine
+    image: node:lts-buster-slim
     depends_on:
       - "Restore Cache"
     environment:
       PRISMA_CLI_QUERY_ENGINE_TYPE: binary
       PRISMA_CLIENT_ENGINE_TYPE: binary
     commands:
-      - apk add --no-cache libc6-compat
+      # - apk add --no-cache libc6-compat
       - yarn install --frozen-lockfile
       - yarn build:keystone
   - name: Publish
@@ -84,14 +84,14 @@ steps:
         - ./frontend/.next/cache
   - name: Build
     pull: if-not-exists
-    image: node:lts-alpine
+    image: node:lts-buster-slim
     depends_on:
       - "Restore Cache"
     environment:
       PRISMA_CLI_QUERY_ENGINE_TYPE: binary
       PRISMA_CLIENT_ENGINE_TYPE: binary
     commands:
-      - apk add --no-cache libc6-compat
+      # - apk add --no-cache libc6-compat
       - yarn install --frozen-lockfile
       - yarn build:frontend
   - name: Publish

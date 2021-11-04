@@ -1,6 +1,6 @@
-FROM node:lts-alpine
+FROM node:lts-buster-slim
 WORKDIR /app
-RUN apk add libc6-compat
+# RUN apk add libc6-compat
 COPY ./frontend/public ./frontend/public
 COPY  ./frontend/.next ./frontend/.next
 COPY  ./node_modules ./node_modules
