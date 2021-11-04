@@ -67,7 +67,7 @@ volumes:
       path: /tmp/cache
 ---
 kind: pipeline
-name: Build and Publish CMS
+name: Build and Publish Frontend
 type: docker
 
 steps:
@@ -112,7 +112,7 @@ steps:
         from_secret: github_username
       password:
         from_secret: github_token
-      repo: ghcr.io/sebasptsch/nextblog
+      repo: ghcr.io/sebasptsch/nextcms
       registry: ghcr.io
       auto_tag: true
   - name: Rebuild Cache
