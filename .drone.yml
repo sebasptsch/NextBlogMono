@@ -24,6 +24,7 @@ steps:
       PRISMA_CLIENT_ENGINE_TYPE: binary
     commands:
       # - apk add --no-cache libc6-compat
+      - apt install libssl-dev -y
       - yarn install --frozen-lockfile
       - yarn build:keystone
   - name: Publish
@@ -92,6 +93,7 @@ steps:
       PRISMA_CLIENT_ENGINE_TYPE: binary
     commands:
       # - apk add --no-cache libc6-compat
+      - apt install libssl-dev -y
       - yarn install --frozen-lockfile
       - yarn build:frontend
   - name: Publish
