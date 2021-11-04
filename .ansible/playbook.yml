@@ -10,8 +10,8 @@
         image: ghcr.io/sebasptsch/nextcms:{{ lookup('env', 'DRONE_COMMIT') }}
         pull: true
         recreate: true
-        environment:
-          - GRAPHQL_ENDPOINT={{ lookup('env', 'GRAPHQL_ENDPOINT') }}
+        env:
+          GRAPHQL_ENDPOINT: lookup('env', 'GRAPHQL_ENDPOINT')
         networks:
           - name: blog
         ports:
