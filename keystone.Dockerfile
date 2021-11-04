@@ -19,7 +19,7 @@ ENV PRISMA_CLIENT_ENGINE_TYPE=binary
 WORKDIR /app
 COPY . .
 COPY --from=dependencies /app/node_modules ./node_modules
-RUN yarn build:frontend
+RUN yarn build:keystone
 
 
 FROM node:lts-buster-slim as production

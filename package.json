@@ -6,7 +6,6 @@
         "frontend"
     ],
     "scripts": {
-        "postinstall": "yarn workspace keystone keystone-next postinstall",
         "dev:keystone": "yarn workspace keystone keystone-next dev",
         "start:keystone": "yarn workspace keystone keystone-next start",
         "build:keystone": "yarn workspace keystone keystone-next build",
