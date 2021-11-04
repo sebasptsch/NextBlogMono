@@ -53,6 +53,8 @@ steps:
       repo: ghcr.io/sebasptsch/nextcms
       registry: ghcr.io
       auto_tag: true
+      tags:
+        - latest
       dockerfile: frontend/Dockerfile
       build_args:
         - GRAPHQL_ENDPOINT=https://cms.sebasptsch.dev/api/graphql
