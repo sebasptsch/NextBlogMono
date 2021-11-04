@@ -66,32 +66,28 @@ steps:
 #   event:
 #     exclude:
 #       - promote
-# ---
-# kind: pipeline
-# type: docker
-# name: Deploy
-# steps:
-#   - name: Deploy Using Ansible
-#     image: plugins/ansible
-#     pull: if-not-exists
-#     environment:
-#       SITE_URL:
-#         from_secret: SITE_URL
-#       GITHUB_CLIENT:
-#         from_secret: GITHUB_CLIENT
-#       GITHUB_SECRET:
-#         from_secret: GITHUB_SECRET
-#     settings:
-#       playbook: .ansible/playbook.yml
-#       ssh_extra_args:
-#         - "-o StrictHostKeyChecking=no"
-#       galaxy: .ansible/requirements.yml
-#       inventory: .ansible/inventory
-#       user: sebas
-#       private_key:
-#         from_secret: ansible_private_key
-# trigger:
-#   event:
-#     - promote
-#   target:
-#     - production
+---
+kind: pipeline
+type: docker
+name: Deploy
+steps:
+  - name: Deploy Using Ansible
+    image: plugins/ansible
+    pull: if-not-exists
+    environment:
+      GRAPHQL_ENDPOINT: https://cms.sebasptsch.dev/api/graphql
+      COMMIT: $DRONE_COMMIT
+    settings:
+      playbook: .ansible/cms-playbook.yml
+      ssh_extra_args:
+        - "-o StrictHostKeyChecking=no"
+      galaxy: .ansible/requirements.yml
+      inventory: .ansible/inventory
+      user: sebas
+      private_key:
+        from_secret: ansible_private_key
+trigger:
+  event:
+    - promote
+  target:
+    - production

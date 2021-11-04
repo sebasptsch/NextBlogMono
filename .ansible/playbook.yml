@@ -1,0 +1,32 @@
+---
+- hosts: all
+  tasks:
+    - name: Create Network
+      community.docker.docker_network:
+        name: blog
+    - name: Deploy CMS
+      community.docker.docker_container:
+        name: cms
+        image: ghcr.io/sebasptsch/nextcms:{{ lookup('env', 'DRONE_COMMIT') }}
+        pull: true
+        recreate: true
+        environment:
+          - GRAPHQL_ENDPOINT={{ lookup('env', 'GRAPHQL_ENDPOINT') }}
+        networks:
+          - name: blog
+        ports:
+          - "3002"
+        restart_policy: unless-stopped
+    - name: Deploy Blog
+      community.docker.docker_container:
+        name: blog
+        image: ghcr.io/sebasptsch/nextblog:{{ lookup('env', 'DRONE_COMMIT') }}
+        pull: true
+        recreate: true
+        environment:
+          - GRAPHQL_ENDPOINT={{ lookup('env', 'GRAPHQL_ENDPOINT') }}
+        networks:
+          - name: blog
+        ports:
+          - "3002"
+        restart_policy: unless-stopped

@@ -43,7 +43,9 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     },
   };
   const { tag }: TagQuery = await request(
-    "https://cms.sebasptsch.dev/api/graphql",
+    process.env.NODE_ENV === "production"
+      ? "https://cms.sebasptsch.dev/api/graphql"
+      : "http://localhost:3002/api/graphql",
     TagDocument,
     variables
   );
