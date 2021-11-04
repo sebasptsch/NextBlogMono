@@ -4,7 +4,7 @@ RUN apt-get install openssl -y
 WORKDIR /app
 ENV PRISMA_CLI_QUERY_ENGINE_TYPE=binary
 ENV PRISMA_CLIENT_ENGINE_TYPE=binary
-COPY package.json yarn.lock keystone/package.json keystone/yarn.lock ./
+COPY ./package.json ./yarn.lock ./keystone/package.json ./
 RUN yarn install --frozen-lockfile
 
 
