@@ -41,4 +41,4 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV DATABASE_URL=file:./config/keystone.db
 
 EXPOSE 3000
-CMD yarn migrate:keystone && yarn start:keystone
+CMD yarn workspace keystone keystone-next prisma migrate deploy && yarn workspace keystone start
