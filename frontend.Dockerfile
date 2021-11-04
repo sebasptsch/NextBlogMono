@@ -13,6 +13,7 @@ RUN apt-get install openssl -y
 WORKDIR /app
 COPY . .
 COPY --from=dependencies /app/node_modules ./node_modules
+ENV GRAPHQL_ENDPOINT "$GRAPHQL_ENDPOINT"
 RUN yarn build:frontend
 
 FROM node:lts-buster-slim as production
@@ -27,7 +28,7 @@ COPY --from=builder ./node_modules ./node_modules
 COPY --from=builder ./package.json ./package.json
 # COPY --from=builder ./frontend/package.json ./frontend/package.json
 COPY --from=builder ./frontend/next.config.js ./frontend/next.config.js
-
+ENV GRAPHQL_ENDPOINT "$GRAPHQL_ENDPOINT"
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
