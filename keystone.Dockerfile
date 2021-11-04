@@ -1,6 +1,6 @@
 FROM node:lts-buster-slim as dependencies
 RUN apt-get update
-RUN apt-get install openssl -y
+RUN apt-get install openssl -y -qq
 WORKDIR /app
 ENV PRISMA_CLI_QUERY_ENGINE_TYPE=binary
 ENV PRISMA_CLIENT_ENGINE_TYPE=binary
@@ -13,7 +13,7 @@ RUN yarn install --frozen-lockfile
 
 FROM node:lts-buster-slim as builder
 RUN apt-get update
-RUN apt-get install openssl -y
+RUN apt-get install openssl -y -qq
 ENV PRISMA_CLI_QUERY_ENGINE_TYPE=binary
 ENV PRISMA_CLIENT_ENGINE_TYPE=binary
 WORKDIR /app
@@ -26,7 +26,7 @@ FROM node:lts-buster-slim as production
 WORKDIR /app
 # RUN apk add libc6-compat
 RUN apt-get update
-RUN apt-get install openssl -y
+RUN apt-get install openssl -y -qq
 COPY  --from=builder /app/keystone/.keystone ./keystone/.keystone
 COPY  --from=builder /app/keystone/node_modules ./keystone/node_modules
 COPY  --from=builder /app/keystone/migrations ./keystone/migrations
