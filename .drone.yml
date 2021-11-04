@@ -3,6 +3,9 @@ name: Build and Publish CMS
 type: exec
 
 steps:
+  - name: Docker Login
+    commands:
+      - docker login ghcr.io
   - name: Pull existing
     commands:
       - docker pull ghcr.io/sebasptsch/nextcms
@@ -51,6 +54,9 @@ name: Build and Publish Frontend
 type: exec
 
 steps:
+  - name: Docker Login
+    commands:
+      - docker login ghcr.io
   - name: Pull existing
     commands:
       - docker pull ghcr.io/sebasptsch/nextblog
