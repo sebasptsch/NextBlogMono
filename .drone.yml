@@ -34,6 +34,8 @@ type: docker
 steps:
   - name: Build and Publish
     image: plugins/docker
+    environment:
+      GRAPHQL_ENDPOINT: https://cms.sebasptsch.dev/api/graphql
     when:
       branch:
         - master
