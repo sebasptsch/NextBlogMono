@@ -5,9 +5,6 @@ type: docker
 steps:
   - name: Publish
     image: plugins/docker
-
-    depends_on:
-      - "Build"
     when:
       branch:
         - master
