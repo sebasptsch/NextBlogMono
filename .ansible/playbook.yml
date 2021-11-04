@@ -13,8 +13,8 @@
         volumes:
           - db:/app/keystone/config
         env:
-          GRAPHQL_ENDPOINT: lookup('env', 'GRAPHQL_ENDPOINT')
-          SESSION_SECRET: lookup('env','SESSION_SECRET')
+          GRAPHQL_ENDPOINT: "{{ lookup('env', 'GRAPHQL_ENDPOINT') }}"
+          SESSION_SECRET: "{{ lookup('env','SESSION_SECRET') }}"
         networks:
           - name: blog
         ports:

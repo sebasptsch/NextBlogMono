@@ -1,32 +1,46 @@
 kind: pipeline
 name: Build and Publish CMS
-type: docker
+type: exec
 
 steps:
-  - name: Publish
-    image: plugins/docker
-    when:
-      branch:
-        - master
-      event:
-        exclude:
-          - pull_request
-    pull: if-not-exists
-    settings:
-      purge: false
-      cache_from: ghcr.io/sebasptsch/nextcms
-      target: production
-      username:
-        from_secret: github_username
-      password:
-        from_secret: github_token
-      repo: ghcr.io/sebasptsch/nextcms
-      auto_tag: false
-      tags:
-        - latest
-        - ${DRONE_COMMIT}
-      registry: ghcr.io
-      dockerfile: keystone.Dockerfile
+  - name: Pull existing
+    commands:
+      - docker pull ghcr.io/sebasptsch/nextcms
+  - name: Build
+    commands:
+      - docker build -f keystone.Dockerfile -t ${DRONE_COMMIT} . --pull=true --cache-from ghcr.io/sebasptsch/nextcms --target production --label org.opencontainers.image.revision=${DRONE_COMMIT} --label org.opencontainers.image.source=${DRONE_REMOTE_URL} --label org.opencontainers.image.url=${DRONE_REPO}
+  - name: Tag
+    commands:
+      - docker tag ${DRONE_COMMIT} ghcr.io/sebasptsch/nextcms:latest
+      - docker tag ${DRONE_COMMIT} ghcr.io/sebasptsch/nextcms:${DRONE_COMMIT}
+  - name: Push
+    commands:
+      - docker push ghcr.io/sebasptsch/nextcms
+  # - name: Publish
+  #   image: plugins/docker
+  #   when:
+  #     branch:
+  #       - master
+  #     event:
+  #       exclude:
+  #         - pull_request
+  #   pull: if-not-exists
+  #   settings:
+  #     purge: false
+  #     cache_from: ghcr.io/sebasptsch/nextcms
+  #     target: production
+  #     username:
+  #       from_secret: github_username
+  #     password:
+  #       from_secret: github_token
+  #     repo: ghcr.io/sebasptsch/nextcms
+  #     auto_tag: false
+  #     pull: false
+  #     tags:
+  #       - latest
+  #       - ${DRONE_COMMIT}
+  #     registry: ghcr.io
+  #     dockerfile: keystone.Dockerfile
 trigger:
   event:
     exclude:
@@ -34,38 +48,52 @@ trigger:
 ---
 kind: pipeline
 name: Build and Publish Frontend
-type: docker
+type: exec
 
 steps:
-  - name: Build and Publish
-    image: plugins/docker
-    environment:
-      GRAPHQL_ENDPOINT: https://cms.sebasptsch.dev/api/graphql
-      DRONE_COMMIT: $DRONE_COMMIT
-    when:
-      branch:
-        - master
-      event:
-        exclude:
-          - pull_request
-    pull: if-not-exists
-    settings:
-      purge: false
-      cache_from: ghcr.io/sebasptsch/nextblog
-      target: production
-      username:
-        from_secret: github_username
-      password:
-        from_secret: github_token
-      repo: ghcr.io/sebasptsch/nextblog
-      registry: ghcr.io
-      auto_tag: false
-      tags:
-        - latest
-        - ${DRONE_COMMIT}
-      dockerfile: frontend.Dockerfile
-      build_args:
-        - GRAPHQL_ENDPOINT=https://cms.sebasptsch.dev/api/graphql
+  - name: Pull existing
+    commands:
+      - docker pull ghcr.io/sebasptsch/nextblog
+  - name: Build
+    commands:
+      - docker build -f keystone.Dockerfile -t ${DRONE_COMMIT} . --pull=true --cache-from ghcr.io/sebasptsch/nextblog --target production --label org.opencontainers.image.revision=${DRONE_COMMIT} --label org.opencontainers.image.source=${DRONE_REMOTE_URL} --label org.opencontainers.image.url=${DRONE_REPO} --build-arg GRAPHQL_ENDPOINT="https://cms.sebasptsch.dev/api/graphql"
+  - name: Tag
+    commands:
+      - docker tag ${DRONE_COMMIT} ghcr.io/sebasptsch/nextblog:latest
+      - docker tag ${DRONE_COMMIT} ghcr.io/sebasptsch/nextblog:${DRONE_COMMIT}
+  - name: Push
+    commands:
+      - docker push ghcr.io/sebasptsch/nextblog
+  # - name: Build and Publish
+  #   image: plugins/docker
+  #   environment:
+  #     GRAPHQL_ENDPOINT: https://cms.sebasptsch.dev/api/graphql
+  #     DRONE_COMMIT: $DRONE_COMMIT
+  #   when:
+  #     branch:
+  #       - master
+  #     event:
+  #       exclude:
+  #         - pull_request
+  #   pull: if-not-exists
+  #   settings:
+  #     purge: false
+  #     cache_from: ghcr.io/sebasptsch/nextblog
+  #     target: production
+  #     pull: false
+  #     username:
+  #       from_secret: github_username
+  #     password:
+  #       from_secret: github_token
+  #     repo: ghcr.io/sebasptsch/nextblog
+  #     registry: ghcr.io
+  #     auto_tag: false
+  #     tags:
+  #       - latest
+  #       - ${DRONE_COMMIT}
+  #     dockerfile: frontend.Dockerfile
+  #     build_args:
+  #       - GRAPHQL_ENDPOINT=https://cms.sebasptsch.dev/api/graphql
 trigger:
   event:
     exclude:
