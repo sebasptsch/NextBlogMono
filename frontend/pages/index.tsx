@@ -100,7 +100,9 @@ export default function Home({
 
 export async function getStaticProps() {
   const { posts }: AllPostsQuery = await request(
-    process.env.GRAPHQL_ENDPOINT,
+    process.env.NODE_ENV === "production"
+      ? "https://cms.sebasptsch.dev/api/graphql"
+      : "http://localhost:3002/api/graphql",
     AllPostsDocument
   );
   return { props: { posts }, revalidate: 10 };
