@@ -14,7 +14,7 @@
         "dev:frontend": "yarn workspace frontend next dev",
         "start:frontend": "yarn workspace frontend next start",
         "generate:frontend": "yarn workspace frontend graphql-codegen --config codegen.yml",
-        "dev": "concurrently -i -n \"NEXTJS,KEYSTONE\" \"yarn dev:nextjs\" \"yarn dev:keystone\"",
+        "dev": "concurrently -i -n \"NEXTJS,KEYSTONE\" \"yarn dev:frontend\" \"yarn dev:keystone\"",
         "build": "concurrently -n \"NEXTJS,KEYSTONE\" \"yarn build:frontend\" \"yarn build:keystone\""
     },
     "dependencies": {

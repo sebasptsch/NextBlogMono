@@ -10,10 +10,10 @@ RUN yarn install --frozen-lockfile --production
 FROM node:lts-buster-slim as builder
 RUN apt-get update
 RUN apt-get install openssl -y -qq
+ARG GRAPHQL_ENDPOINT
 WORKDIR /app
 COPY . .
 COPY --from=dependencies /app/node_modules ./node_modules
-ENV GRAPHQL_ENDPOINT "$GRAPHQL_ENDPOINT"
 RUN yarn build:frontend
 
 FROM node:lts-buster-slim as production
@@ -21,7 +21,7 @@ WORKDIR /app
 # RUN apk add libc6-compat
 RUN apt-get update
 RUN apt-get install openssl -y -qq
-
+ARG GRAPHQL_ENDPOINT
 COPY --from=builder ./frontend/public ./frontend/public
 COPY --from=builder ./frontend/.next ./frontend/.next
 COPY --from=builder ./node_modules ./node_modules
