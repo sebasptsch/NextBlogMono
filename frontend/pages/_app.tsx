@@ -1,5 +1,6 @@
 import { Chakra } from "@/utils/chakra";
-import { DefaultSeo } from "next-seo";
+import { DefaultSeo, SocialProfileJsonLd } from "next-seo";
+import React from "react";
 import "react-static-tweets/styles.css";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
@@ -17,6 +18,12 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
           site: "@sebasptsch",
           cardType: "summary_large_image",
         }}
+      />
+      <SocialProfileJsonLd
+        type="Person"
+        name="Sebastian Pietschner"
+        url="https://sebasptsch.dev"
+        sameAs={["https://twitter.com/sebasptsch"]}
       />
       <Component {...pageProps} />
       {/* </SessionProvider> */}
