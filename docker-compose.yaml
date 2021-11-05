@@ -9,7 +9,7 @@ services:
       context: ./
       dockerfile: frontend.Dockerfile
       args:
-        GRAPHQL_ENDPOINT: http://cms:3002/api/graphql
+        GRAPHQL_ENDPOINT: https://cms.sebasptsch.dev/api/graphql
     env_file: ./frontend/.env.local
     networks:
       - blog
