@@ -44,7 +44,7 @@ steps:
           - pull_request
     pull: if-not-exists
     settings:
-      purge: false
+      purge: true
       cache_from: ghcr.io/sebasptsch/nextcms
       target: production
       username:
@@ -53,7 +53,7 @@ steps:
         from_secret: github_token
       repo: ghcr.io/sebasptsch/nextcms
       auto_tag: false
-      pull: false
+      pull: true
       tags:
         - latest
         - ${DRONE_COMMIT}
@@ -113,10 +113,10 @@ steps:
           - pull_request
     pull: if-not-exists
     settings:
-      purge: false
+      purge: true
       cache_from: ghcr.io/sebasptsch/nextblog
       target: production
-      pull: false
+      pull: true
       username:
         from_secret: github_username
       password:

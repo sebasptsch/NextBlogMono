@@ -8,6 +8,8 @@ services:
     build:
       context: ./
       dockerfile: frontend.Dockerfile
+      args:
+        GRAPHQL_ENDPOINT: http://cms:3002/api/graphql
     env_file: ./frontend/.env.local
     networks:
       - blog

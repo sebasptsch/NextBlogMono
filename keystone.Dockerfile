@@ -34,7 +34,7 @@ COPY  --from=builder /app/keystone/migrations ./keystone/migrations
 COPY --from=builder  /app/keystone/package.json ./keystone/package.json
 COPY  --from=builder /app/package.json ./package.json
 
-
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD [ "node ./keystone/healthcheck.js" ]
 ENV PRISMA_CLI_QUERY_ENGINE_TYPE=binary
 ENV PRISMA_CLIENT_ENGINE_TYPE=binary
 ENV NODE_ENV=production

@@ -22,13 +22,12 @@ WORKDIR /app
 RUN apt-get update
 RUN apt-get install openssl -y -qq
 ARG GRAPHQL_ENDPOINT
-COPY --from=builder ./frontend/public ./frontend/public
-COPY --from=builder ./frontend/.next ./frontend/.next
-COPY --from=builder ./node_modules ./node_modules
-COPY --from=builder ./package.json ./package.json
-COPY --from=builder ./frontend/package.json ./frontend/package.json
-COPY --from=builder ./frontend/next.config.js ./frontend/next.config.js
-ENV GRAPHQL_ENDPOINT "$GRAPHQL_ENDPOINT"
+COPY --from=builder /app/frontend/public ./frontend/public
+COPY --from=builder /app/frontend/.next ./frontend/.next
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/frontend/package.json ./frontend/package.json
+COPY --from=builder /app/frontend/next.config.js ./frontend/next.config.js
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 

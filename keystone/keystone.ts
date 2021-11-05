@@ -23,7 +23,7 @@ export default withAuth(
     },
     experimental: {
       enableNextJsGraphqlApiEndpoint: true,
-      generateNodeAPI: true,
+      generateNodeAPI: false,
       generateNextGraphqlAPI: true,
     },
     // This config allows us to set up features of the Admin UI https://keystonejs.com/docs/apis/config#ui
@@ -51,6 +51,14 @@ export default withAuth(
         app.use("/images", express.static("config/images"));
       },
       port: 3002,
+      healthCheck: {
+        path: "/_healthcheck",
+        data: () => ({
+          status: "healthy",
+          timestamp: Date.now(),
+          uptime: process.uptime(),
+        }),
+      },
     },
     session,
     lists,
