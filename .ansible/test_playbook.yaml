@@ -1,0 +1,14 @@
+---
+- hosts: all
+  tasks:
+    - name: GIT
+      ansible.builtin.git:
+        repo: https://github.com/sebasptsch/NextBlogMono.git
+        dest: ~/BlogStack/
+    - name: Docker Compose
+      community.docker.docker_compose:
+        project_src: ~/BlogStack
+        build: yes
+      register: test
+    - ansible.builtin.debug:
+        var: test

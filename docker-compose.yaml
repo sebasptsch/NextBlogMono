@@ -10,7 +10,6 @@ services:
       dockerfile: frontend.Dockerfile
       args:
         GRAPHQL_ENDPOINT: https://cms.sebasptsch.dev/api/graphql
-    env_file: ./frontend/.env.local
     networks:
       - blog
     ports:
@@ -22,7 +21,6 @@ services:
       dockerfile: keystone.Dockerfile
     ports:
       - "3002:3002"
-    env_file: ./keystone/.env.local
     networks:
       - blog
     volumes:
