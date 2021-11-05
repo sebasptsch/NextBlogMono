@@ -3,7 +3,7 @@ var options = {
   host: "localhost",
   port: "3000",
   timeout: 2000,
-  path: "/_healthcheck",
+  path: "/api/healthcheck",
 };
 var request = http.request(options, (res) => {
   console.log(`STATUS: ${res.statusCode}`);
