@@ -38,7 +38,7 @@ steps:
     image: plugins/docker
     when:
       branch:
-        - master
+        - main
       event:
         exclude:
           - pull_request
@@ -107,7 +107,7 @@ steps:
       DRONE_COMMIT: $DRONE_COMMIT
     when:
       branch:
-        - master
+        - main
       event:
         exclude:
           - pull_request
