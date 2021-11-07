@@ -14,7 +14,7 @@ steps:
       mount:
         - ./node_modules
         - ./frontend/.next/cache
-        - ./keystone/admin/.next/cache
+        - ./keystone/.keystone/admin/.next/cache
 
   - name: Install Dependencies
     pull: if-not-exists
@@ -60,7 +60,7 @@ steps:
       mount:
         - ./node_modules
         - ./frontend/.next/cache
-        - ./keystone/admin/.next/cache
+        - ./keystone/.keystone/admin/.next/cache
 
   - name: Publish CMS
     pull: if-not-exists

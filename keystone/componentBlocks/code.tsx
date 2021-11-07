@@ -1,5 +1,8 @@
 import {
-  component, fields, FormField, NotEditable
+  component,
+  fields,
+  FormField,
+  NotEditable,
 } from "@keystone-next/fields-document/component-blocks";
 import { FieldContainer, FieldLabel, TextArea } from "@keystone-ui/fields";
 import React from "react";
@@ -36,9 +39,7 @@ const textarea = ({
       return typeof value === "string";
     },
   };
-}
-
-
+};
 
 export const code = component({
   component: ({ content, language }) => {
@@ -60,4 +61,3 @@ export const code = component({
   },
   chromeless: false,
 });
-
