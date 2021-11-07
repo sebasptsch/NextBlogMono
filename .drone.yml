@@ -76,10 +76,10 @@ steps:
     pull: if-not-exists
     image: plugins/docker
     depends_on:
-      - "Build Keystone"
+      - Build Keystone
     environment:
       SESSION_SECRET:
-        from_secret: SESSION_SECRET
+        from_secret: session_secret
     when:
       branch:
         - main
@@ -125,4 +125,6 @@ volumes:
       path: /tmp/cache
 ---
 kind: signature
-hmac: ecd1c6f73c31c5883847ba909efb68248e82ebeb54068b22bcc39330254d4553
+hmac: f7c66c2833aeb07bd28f71c896360177584c156525e5b843e1f8f031e6daa51d
+
+...

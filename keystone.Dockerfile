@@ -3,7 +3,7 @@ WORKDIR /app
 # RUN apk add libc6-compat
 RUN apt-get update
 RUN apt-get install openssl -y -qq
-COPY ./keystone ./keystone
+COPY . .
 COPY  ./node_modules /app/node_modules
 COPY ./package.json /app/package.json
 
