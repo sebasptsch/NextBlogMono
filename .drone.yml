@@ -85,7 +85,7 @@ steps:
         from_secret: github_token
       repo: ghcr.io/sebasptsch/nextcms
       registry: ghcr.io
-      dockerfile: keystone.partial.Dockerfile
+      dockerfile: keystone.Dockerfile
   - name: Publish Frontend
     pull: if-not-exists
     image: plugins/docker
@@ -109,7 +109,7 @@ steps:
         from_secret: github_token
       repo: ghcr.io/sebasptsch/nextblog
       registry: ghcr.io
-      dockerfile: frontend.partial.Dockerfile
+      dockerfile: frontend.Dockerfile
 
 volumes:
   - name: cache
