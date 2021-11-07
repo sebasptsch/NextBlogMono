@@ -24,7 +24,7 @@ steps:
     commands:
       - apt-get update
       - apt-get install openssl -y -qq
-      - "yarn install --frozen-lockfile --production"
+      - "yarn install --frozen-lockfile --production  --ignore-scripts"
 
   - name: Build Keystone
     failure: ignore
