@@ -12,6 +12,37 @@ steps:
         from_secret: github_token
     commands:
       - docker login -u $GITHUB_USERNAME -p $GITHUB_TOKEN https://ghcr.io
-  - name: Hello
+  - name: Version & Info
+    depends_on:
+      - "Log In"
     commands:
-      - echo hello world
+      - docker version
+      - docker info
+  - name: Build Blog
+    depends_on: "Version & Info"
+    environment:
+      GHCR:
+        from_secret: cmsdocker
+      TARGET: production
+      DOCKERFILE: frontend.Dockerfile
+    commands:
+      - docker pull $GHCR
+      - docker build --rm=true -f $DOCKERFILE -t $DRONE_COMMIT . --pull=true --cache-from $GHCR --target $TARGET --label org.opencontainers.image.revision=$DRONE_COMMIT --label org.opencontainers.image.source=$DRONE_REMOTE_URL --label org.opencontainers.image.url=$DRONE_REMOTE_URL
+      - docker tag $DRONE_COMMIT $GHCR:latest
+      - docker push $GHCR:latest
+      - docker tag $DRONE_COMMIT $GHCR:$DRONE_COMMIT
+      - docker push $GHCR:$DRONE_COMMIT
+  - name: Build CMS
+    depends_on: "Version & Info"
+    environment:
+      GHCR:
+        from_secret: frontenddocker
+      TARGET: production
+      DOCKERFILE: keystone.Dockerfile
+    commands:
+      - docker pull $GHCR
+      - docker build --rm=true -f $DOCKERFILE -t $DRONE_COMMIT . --pull=true --cache-from $GHCR --target $TARGET --label org.opencontainers.image.revision=$DRONE_COMMIT --label org.opencontainers.image.source=$DRONE_REMOTE_URL --label org.opencontainers.image.url=$DRONE_REMOTE_URL
+      - docker tag $DRONE_COMMIT $GHCR:latest
+      - docker push $GHCR:latest
+      - docker tag $DRONE_COMMIT $GHCR:$DRONE_COMMIT
+      - docker push $GHCR:$DRONE_COMMIT
