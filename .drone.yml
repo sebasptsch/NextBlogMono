@@ -4,6 +4,7 @@ type: docker
 name: default
 steps:
   - name: Restore Cache
+    pull: if-not-exists
     image: drillster/drone-volume-cache
     volumes:
       - name: cache
@@ -16,6 +17,7 @@ steps:
         - ./keystone/admin/.next/cache
 
   - name: Install Dependencies
+    pull: if-not-exists
     image: node:lts-buster
     depends_on:
       - "Restore Cache"
@@ -23,6 +25,7 @@ steps:
       - "yarn install --frozen-lockfile --production"
 
   - name: "Build Keystone"
+    pull: if-not-exists
     image: node:lts-buster
     environment:
       SESSION_SECRET:
@@ -33,6 +36,7 @@ steps:
       - "yarn build:keystone"
 
   - name: "Build Frontend"
+    pull: if-not-exists
     image: node:lts-buster
     environment:
       GRAPHQL_ENDPOINT:
@@ -43,6 +47,7 @@ steps:
       - "yarn build:frontend"
 
   - name: Rebuild Cache
+    pull: if-not-exists
     image: drillster/drone-volume-cache
     depends_on:
       - "Build Keystone"
@@ -58,6 +63,7 @@ steps:
         - ./keystone/admin/.next/cache
 
   - name: Publish CMS
+    pull: if-not-exists
     image: plugins/docker
     depends_on:
       - "Build Keystone"
@@ -81,6 +87,7 @@ steps:
       registry: ghcr.io
       dockerfile: keystone.partial.Dockerfile
   - name: Publish Frontend
+    pull: if-not-exists
     image: plugins/docker
     depends_on:
       - "Build Frontend"

@@ -7,7 +7,7 @@ services:
       - cms
     build:
       context: ./
-      dockerfile: frontend.Dockerfile
+      dockerfile: frontend.full.Dockerfile
       args:
         GRAPHQL_ENDPOINT: http://cms:3002/api/graphql
     networks:
@@ -19,7 +19,7 @@ services:
     container_name: cms
     build:
       context: ./
-      dockerfile: keystone.Dockerfile
+      dockerfile: keystone.full.Dockerfile
       args:
         NODE_ENV: development
     ports:
