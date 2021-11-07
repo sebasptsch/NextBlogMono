@@ -74,6 +74,8 @@ steps:
       branch:
         - main
       event:
+        include:
+          - "promotion"
         exclude:
           - pull_request
     settings:
@@ -98,6 +100,8 @@ steps:
       branch:
         - main
       event:
+        include:
+          - "promotion"
         exclude:
           - pull_request
     settings:
