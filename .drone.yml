@@ -3,6 +3,57 @@ name: Build and Publish CMS
 type: docker
 
 steps:
+  - name: Cache Dependencies
+    image: plugins/docker
+    when:
+      branch:
+        - main
+      event:
+        exclude:
+          - pull_request
+    pull: if-not-exists
+    settings:
+      cache_from: ghcr.io/sebasptsch/nextcms:dependencies
+      target: dependencies
+      username:
+        from_secret: github_username
+      password:
+        from_secret: github_token
+      repo: ghcr.io/sebasptsch/nextcms
+      auto_tag: false
+      tags:
+        - dependencies
+      registry: ghcr.io
+      dockerfile: keystone.Dockerfile
+  - name: Cache Builder
+    image: plugins/docker
+    environment:
+      SESSION_SECRET:
+        from_secret: SESSION_SECRET
+    when:
+      branch:
+        - main
+      event:
+        exclude:
+          - pull_request
+    pull: if-not-exists
+    settings:
+      cache_from:
+        - ghcr.io/sebasptsch/nextcms:dependencies
+        - ghcr.io/sebasptsch/nextcms:builder
+      target: builder
+      username:
+        from_secret: github_username
+      password:
+        from_secret: github_token
+      repo: ghcr.io/sebasptsch/nextcms
+      auto_tag: false
+      tags:
+        - builder
+      registry: ghcr.io
+      dockerfile: keystone.Dockerfile
+      build_args_from_env:
+        - SESSION_SECRET
   - name: Publish CMS
     image: plugins/docker
     environment:
@@ -16,8 +67,10 @@ steps:
           - pull_request
     pull: if-not-exists
     settings:
-      purge: true
-      cache_from: ghcr.io/sebasptsch/nextcms
+      cache_from:
+        - ghcr.io/sebasptsch/nextcms:dependancies
+        - ghcr.io/sebasptsch/nextcms:builder
+        - ghcr.io/sebasptsch/nextcms:production
       target: production
       build_args_from_env:
         - SESSION_SECRET
@@ -27,7 +80,6 @@ steps:
         from_secret: github_token
       repo: ghcr.io/sebasptsch/nextcms
       auto_tag: false
-      pull: true
       tags:
         - latest
         - ${DRONE_COMMIT}
@@ -43,6 +95,57 @@ name: Build and Publish Frontend
 type: docker
 
 steps:
+  - name: Cache Dependencies
+    image: plugins/docker
+    when:
+      branch:
+        - main
+      event:
+        exclude:
+          - pull_request
+    pull: if-not-exists
+    settings:
+      cache_from: ghcr.io/sebasptsch/nextblog:dependencies
+      target: dependencies
+      username:
+        from_secret: github_username
+      password:
+        from_secret: github_token
+      repo: ghcr.io/sebasptsch/nextcms
+      auto_tag: false
+      tags:
+        - dependencies
+      registry: ghcr.io
+      dockerfile: frontend.Dockerfile
+  - name: Cache Builder
+    image: plugins/docker
+    environment:
+      GRAPHQL_ENDPOINT:
+        from_secret: GRAPHQL_ENDPOINT
+    when:
+      branch:
+        - main
+      event:
+        exclude:
+          - pull_request
+    pull: if-not-exists
+    settings:
+      cache_from:
+        - ghcr.io/sebasptsch/nextblog:dependencies
+        - ghcr.io/sebasptsch/nextblog:builder
+      target: builder
+      username:
+        from_secret: github_username
+      password:
+        from_secret: github_token
+      repo: ghcr.io/sebasptsch/nextblog
+      auto_tag: false
+      tags:
+        - builder
+      registry: ghcr.io
+      dockerfile: frontend.Dockerfile
+      build_args_from_env:
+        - GRAPHQL_ENDPOINT
   - name: Build and Publish
     image: plugins/docker
     environment:
@@ -56,10 +159,11 @@ steps:
           - pull_request
     pull: if-not-exists
     settings:
-      purge: true
-      cache_from: ghcr.io/sebasptsch/nextblog
+      cache_from:
+        - ghcr.io/sebasptsch/nextblog:production
+        - ghcr.io/sebasptsch/nextblog:builder
+        - ghcr.io/sebasptsch/nextblog:dependencies
       target: production
-      pull: true
       username:
         from_secret: github_username
       password:
@@ -70,6 +174,7 @@ steps:
       tags:
         - latest
         - ${DRONE_COMMIT}
+        - production
       dockerfile: frontend.Dockerfile
       build_args_from_env:
         - GRAPHQL_ENDPOINT
