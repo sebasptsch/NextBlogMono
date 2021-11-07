@@ -4,6 +4,14 @@ type: exec
 name: default
 
 steps:
-  - name: greeting
+  - name: Log In
+    environment:
+      GITHUB_USERNAME:
+        from_secret: github_username
+      GITHUB_TOKEN:
+        from_secret: github_token
+    commands:
+      - docker login -u $$GITHUB_USERNAME -p $$GITHUB_TOKEN
+  - name: Docker Build
     commands:
       - echo hello world
