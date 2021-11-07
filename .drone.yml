@@ -13,6 +13,7 @@ steps:
           - pull_request
     pull: if-not-exists
     settings:
+      pull_image: false
       cache_from: ghcr.io/sebasptsch/nextcms:dependencies
       target: dependencies
       username:
@@ -38,6 +39,7 @@ steps:
           - pull_request
     pull: if-not-exists
     settings:
+      pull_image: false
       cache_from:
         - ghcr.io/sebasptsch/nextcms:dependencies
         - ghcr.io/sebasptsch/nextcms:builder
@@ -67,6 +69,7 @@ steps:
           - pull_request
     pull: if-not-exists
     settings:
+      pull_image: false
       cache_from:
         - ghcr.io/sebasptsch/nextcms:dependancies
         - ghcr.io/sebasptsch/nextcms:builder
@@ -82,7 +85,6 @@ steps:
       auto_tag: false
       tags:
         - latest
-        - ${DRONE_COMMIT}
         - production
       registry: ghcr.io
       dockerfile: keystone.Dockerfile
@@ -106,6 +108,7 @@ steps:
           - pull_request
     pull: if-not-exists
     settings:
+      pull_image: false
       cache_from: ghcr.io/sebasptsch/nextblog:dependencies
       target: dependencies
       username:
@@ -131,6 +134,7 @@ steps:
           - pull_request
     pull: if-not-exists
     settings:
+      pull_image: false
       cache_from:
         - ghcr.io/sebasptsch/nextblog:dependencies
         - ghcr.io/sebasptsch/nextblog:builder
@@ -165,6 +169,7 @@ steps:
         - ghcr.io/sebasptsch/nextblog:builder
         - ghcr.io/sebasptsch/nextblog:dependencies
       target: production
+      pull_image: false
       username:
         from_secret: github_username
       password:
@@ -174,7 +179,6 @@ steps:
       auto_tag: false
       tags:
         - latest
-        - ${DRONE_COMMIT}
         - production
       dockerfile: frontend.Dockerfile
       build_args_from_env:
@@ -183,29 +187,3 @@ trigger:
   event:
     exclude:
       - promote
-# ---
-# kind: pipeline
-# type: docker
-# name: Deploy
-# steps:
-#   - name: Deploy Using Ansible
-#     image: plugins/ansible
-#     pull: if-not-exists
-#     environment:
-#       GRAPHQL_ENDPOINT: https://cms.sebasptsch.dev/api/graphql
-#       SESSION_SECRET:
-#         from_secret: SESSION_SECRET
-#     settings:
-#       playbook: .ansible/playbook.yml
-#       ssh_extra_args:
-#         - "-o StrictHostKeyChecking=no"
-#       galaxy: .ansible/requirements.yml
-#       inventory: .ansible/inventory
-#       user: sebas
-#       private_key:
-#         from_secret: ansible_private_key
-# trigger:
-#   event:
-#     - promote
-#   target:
-#     - production
