@@ -1,6 +1,4 @@
-FROM node:lts-buster-slim as dependencies
-RUN apt-get update
-RUN apt-get install openssl -y -qq
+FROM node:lts-buster as dependencies
 WORKDIR /app
 ENV PRISMA_CLI_QUERY_ENGINE_TYPE=binary
 ENV PRISMA_CLIENT_ENGINE_TYPE=binary
@@ -10,9 +8,7 @@ COPY  ./keystone/package.json ./keystone/package.json
 RUN yarn install --frozen-lockfile --production
 
 
-FROM node:lts-buster-slim as builder
-RUN apt-get update
-RUN apt-get install openssl -y -qq
+FROM node:lts-buster as builder
 ENV PRISMA_CLI_QUERY_ENGINE_TYPE=binary
 ENV PRISMA_CLIENT_ENGINE_TYPE=binary
 WORKDIR /app
