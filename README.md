@@ -2,8 +2,6 @@
 
 [![Build Status](https://ci.sebasptsch.dev/api/badges/sebasptsch/NextBlogMono/status.svg?ref=refs/heads/main)](https://ci.sebasptsch.dev/sebasptsch/NextBlogMono)
 
----
-
 ## About
 
 This is the code for my personal blog where I publish posts and experiement with new technology. Over time it has gone through many different iterations with this being the latest (Late 2021). It's build using KeystoneJS as the CMS and NextJS with Incremental Server Side Rendering.
