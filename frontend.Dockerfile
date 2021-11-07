@@ -1,11 +1,15 @@
-FROM node:lts-buster as dependencies
+FROM node:lts-buster-slim as dependencies
+RUN apt-get update
+RUN apt-get install openssl -y -qq
 WORKDIR /app
 COPY ./package.json  ./
 COPY ./yarn.lock  ./
 COPY  ./frontend/package.json ./frontend/package.json
 RUN yarn install --frozen-lockfile --production
 
-FROM node:lts-buster as builder
+FROM node:lts-buster-slim as builder
+RUN apt-get update
+RUN apt-get install openssl -y -qq
 ARG GRAPHQL_ENDPOINT
 ENV NODE_ENV=production
 WORKDIR /app

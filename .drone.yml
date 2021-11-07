@@ -83,6 +83,7 @@ steps:
       tags:
         - latest
         - ${DRONE_COMMIT}
+        - production
       registry: ghcr.io
       dockerfile: keystone.Dockerfile
 trigger:
