@@ -4,8 +4,8 @@ WORKDIR /app
 RUN apt-get update
 RUN apt-get install openssl -y -qq
 ARG GRAPHQL_ENDPOINT
-COPY ./public ./frontend/public
-COPY ./.next ./frontend/.next
+COPY ./frontend/public ./frontend/public
+COPY ./frontend/.next ./frontend/.next
 COPY ./node_modules ./node_modules
 COPY ./package.json ./package.json
 COPY ./frontend/package.json ./frontend/package.json

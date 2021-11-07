@@ -3,7 +3,7 @@ WORKDIR /app
 # RUN apk add libc6-compat
 RUN apt-get update
 RUN apt-get install openssl -y -qq
-COPY . .
+COPY ./keystone ./keystone
 COPY  ./node_modules ./node_modules
 
 ENV PRISMA_CLI_QUERY_ENGINE_TYPE=binary
