@@ -19,6 +19,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 COPY . .
 COPY --from=dependencies /app/node_modules ./node_modules
+ARG SESSION_SECRET
 RUN yarn build:keystone
 
 
@@ -37,6 +38,7 @@ COPY  --from=builder /app/package.json ./package.json
 ENV PRISMA_CLI_QUERY_ENGINE_TYPE=binary
 ENV PRISMA_CLIENT_ENGINE_TYPE=binary
 ENV NODE_ENV=production
+ARG SESSION_SECRET
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV DATABASE_URL=file:./config/keystone.db
 EXPOSE 3000

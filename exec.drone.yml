@@ -1,0 +1,50 @@
+---
+kind: pipeline
+type: exec
+name: default
+
+steps:
+  - name: Log In
+    environment:
+      GITHUB_USERNAME:
+        from_secret: github_username
+      GITHUB_TOKEN:
+        from_secret: github_token
+    commands:
+      - docker login -u $GITHUB_USERNAME -p $GITHUB_TOKEN https://ghcr.io
+  - name: Version and Info
+    depends_on:
+      - "Log In"
+    commands:
+      - docker version
+      - docker info
+  - name: Build and Publish
+    depends_on:
+      - "Version and Info"
+    environment:
+      GHCR:
+        from_secret: cmsdocker
+      TARGET: production
+      DOCKERFILE: frontend.Dockerfile
+    commands:
+      - docker pull $GHCR
+      - docker build --rm=true -f $DOCKERFILE -t $DRONE_COMMIT . --pull=true --cache-from $GHCR --target $TARGET --label org.opencontainers.image.revision=$DRONE_COMMIT --label org.opencontainers.image.source=$DRONE_REMOTE_URL --label org.opencontainers.image.url=$DRONE_REMOTE_URL
+      - docker tag $DRONE_COMMIT $GHCR:latest
+      - docker push $GHCR:latest
+      - docker tag $DRONE_COMMIT $GHCR:$DRONE_COMMIT
+      - docker push $GHCR:$DRONE_COMMIT
+  - name: Build and Publish CMS
+    depends_on:
+      - "Version and Info"
+    environment:
+      GHCR:
+        from_secret: frontenddocker
+      TARGET: production
+      DOCKERFILE: keystone.Dockerfile
+    commands:
+      - docker pull $GHCR
+      - docker build --rm=true -f $DOCKERFILE -t $DRONE_COMMIT . --pull=true --cache-from $GHCR --target $TARGET --label org.opencontainers.image.revision=$DRONE_COMMIT --label org.opencontainers.image.source=$DRONE_REMOTE_URL --label org.opencontainers.image.url=$DRONE_REMOTE_URL --build-arg GRAPHQL_ENDPOINT=https://cms.sebasptsch.dev
+      - docker tag $DRONE_COMMIT $GHCR:latest
+      - docker push $GHCR:latest
+      - docker tag $DRONE_COMMIT $GHCR:$DRONE_COMMIT
+      - docker push $GHCR:$DRONE_COMMIT

@@ -1,50 +1,105 @@
----
 kind: pipeline
-type: exec
-name: default
+name: Build and Publish CMS
+type: docker
 
 steps:
-  - name: Log In
+  - name: Publish CMS
+    image: plugins/docker
     environment:
-      GITHUB_USERNAME:
+      SESSION_SECRET:
+        from_secret: SESSION_SECRET
+    when:
+      branch:
+        - main
+      event:
+        exclude:
+          - pull_request
+    pull: if-not-exists
+    settings:
+      purge: true
+      cache_from: ghcr.io/sebasptsch/nextcms
+      target: production
+      build_args_from_env:
+        - SESSION_SECRET
+      username:
         from_secret: github_username
-      GITHUB_TOKEN:
+      password:
         from_secret: github_token
-    commands:
-      - docker login -u $GITHUB_USERNAME -p $GITHUB_TOKEN https://ghcr.io
-  - name: Version and Info
-    depends_on:
-      - "Log In"
-    commands:
-      - docker version
-      - docker info
+      repo: ghcr.io/sebasptsch/nextcms
+      auto_tag: false
+      pull: true
+      tags:
+        - latest
+        - $DRONE_COMMIT
+      registry: ghcr.io
+      dockerfile: keystone.Dockerfile
+trigger:
+  event:
+    exclude:
+      - promote
+---
+kind: pipeline
+name: Build and Publish Frontend
+type: docker
+
+steps:
   - name: Build and Publish
-    depends_on:
-      - "Version and Info"
+    image: plugins/docker
     environment:
-      GHCR:
-        from_secret: cmsdocker
-      TARGET: production
-      DOCKERFILE: frontend.Dockerfile
-    commands:
-      - docker pull $GHCR
-      - docker build --rm=true -f $DOCKERFILE -t $DRONE_COMMIT . --pull=true --cache-from $GHCR --target $TARGET --label org.opencontainers.image.revision=$DRONE_COMMIT --label org.opencontainers.image.source=$DRONE_REMOTE_URL --label org.opencontainers.image.url=$DRONE_REMOTE_URL
-      - docker tag $DRONE_COMMIT $GHCR:latest
-      - docker push $GHCR:latest
-      - docker tag $DRONE_COMMIT $GHCR:$DRONE_COMMIT
-      - docker push $GHCR:$DRONE_COMMIT
-  - name: Build and Publish CMS
-    depends_on:
-      - "Version and Info"
-    environment:
-      GHCR:
-        from_secret: frontenddocker
-      TARGET: production
-      DOCKERFILE: keystone.Dockerfile
-    commands:
-      - docker pull $GHCR
-      - docker build --rm=true -f $DOCKERFILE -t $DRONE_COMMIT . --pull=true --cache-from $GHCR --target $TARGET --label org.opencontainers.image.revision=$DRONE_COMMIT --label org.opencontainers.image.source=$DRONE_REMOTE_URL --label org.opencontainers.image.url=$DRONE_REMOTE_URL --build-arg GRAPHQL_ENDPOINT=https://cms.sebasptsch.dev
-      - docker tag $DRONE_COMMIT $GHCR:latest
-      - docker push $GHCR:latest
-      - docker tag $DRONE_COMMIT $GHCR:$DRONE_COMMIT
-      - docker push $GHCR:$DRONE_COMMIT
+      GRAPHQL_ENDPOINT:
+        from_secret: GRAPHQL_ENDPOINT
+    when:
+      branch:
+        - main
+      event:
+        exclude:
+          - pull_request
+    pull: if-not-exists
+    settings:
+      purge: true
+      cache_from: ghcr.io/sebasptsch/nextblog
+      target: production
+      pull: true
+      username:
+        from_secret: github_username
+      password:
+        from_secret: github_token
+      repo: ghcr.io/sebasptsch/nextblog
+      registry: ghcr.io
+      auto_tag: false
+      tags:
+        - latest
+        - ${DRONE_COMMIT}
+      dockerfile: frontend.Dockerfile
+      build_args_from_env:
+        - GRAPHQL_ENDPOINT
+trigger:
+  event:
+    exclude:
+      - promote
+# ---
+# kind: pipeline
+# type: docker
+# name: Deploy
+# steps:
+#   - name: Deploy Using Ansible
+#     image: plugins/ansible
+#     pull: if-not-exists
+#     environment:
+#       GRAPHQL_ENDPOINT: https://cms.sebasptsch.dev/api/graphql
+#       SESSION_SECRET:
+#         from_secret: SESSION_SECRET
+#     settings:
+#       playbook: .ansible/playbook.yml
+#       ssh_extra_args:
+#         - "-o StrictHostKeyChecking=no"
+#       galaxy: .ansible/requirements.yml
+#       inventory: .ansible/inventory
+#       user: sebas
+#       private_key:
+#         from_secret: ansible_private_key
+# trigger:
+#   event:
+#     - promote
+#   target:
+#     - production
