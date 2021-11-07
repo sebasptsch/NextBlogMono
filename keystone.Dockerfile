@@ -4,7 +4,8 @@ WORKDIR /app
 RUN apt-get update
 RUN apt-get install openssl -y -qq
 COPY ./keystone ./keystone
-COPY  ./node_modules ./node_modules
+COPY  ./node_modules /app/node_modules
+COPY ./package.json /app/package.json
 
 ENV PRISMA_CLI_QUERY_ENGINE_TYPE=binary
 ENV PRISMA_CLIENT_ENGINE_TYPE=binary
