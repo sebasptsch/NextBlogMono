@@ -106,7 +106,6 @@ steps:
         - main
       event:
         - promote
-
     settings:
       build_args_from_env:
         - GRAPHQL_ENDPOINT
@@ -125,5 +124,3 @@ volumes:
 ---
 kind: signature
 hmac: 6ea9b75ac8e2700083d64cd645ef789d1fa85d7eb1014a8182ed9662154a0d9d
-
-...
