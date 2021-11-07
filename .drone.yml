@@ -19,7 +19,8 @@ steps:
       - docker version
       - docker info
   - name: Build and Publish
-    depends_on: "Version and Info"
+    depends_on:
+      - "Version and Info"
     environment:
       GHCR:
         from_secret: cmsdocker
@@ -33,7 +34,8 @@ steps:
       - docker tag $DRONE_COMMIT $GHCR:$DRONE_COMMIT
       - docker push $GHCR:$DRONE_COMMIT
   - name: Build and Publish CMS
-    depends_on: "Version and Info"
+    depends_on:
+      - "Version and Info"
     environment:
       GHCR:
         from_secret: frontenddocker
