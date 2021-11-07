@@ -112,7 +112,7 @@ steps:
         from_secret: github_username
       password:
         from_secret: github_token
-      repo: ghcr.io/sebasptsch/nextcms
+      repo: ghcr.io/sebasptsch/nextblog
       auto_tag: false
       tags:
         - dependencies
