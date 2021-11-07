@@ -19,8 +19,11 @@ steps:
   - name: Install Dependencies
     pull: if-not-exists
     image: node:lts-buster-slim
+    environment:
+      SESSION_SECRET:
+        from_secret: session_secret
     depends_on:
-      - "Restore Cache"
+      - Restore Cache
     commands:
       - apt-get update
       - apt-get install openssl -y -qq
@@ -31,7 +34,7 @@ steps:
     image: node:lts-buster-slim
     environment:
       SESSION_SECRET:
-        from_secret: SESSION_SECRET
+        from_secret: session_secret
     depends_on:
       - Install Dependencies
     commands:
@@ -47,7 +50,7 @@ steps:
       GRAPHQL_ENDPOINT:
         from_secret: GRAPHQL_ENDPOINT
     depends_on:
-      - "Install Dependencies"
+      - Install Dependencies
     commands:
       - apt-get update
       - apt-get install openssl -y -qq
@@ -122,4 +125,4 @@ volumes:
       path: /tmp/cache
 ---
 kind: signature
-hmac: d85889a5df11868070185d449cb76d149829910e215c11c3d2290d841e21fe2e
+hmac: ecd1c6f73c31c5883847ba909efb68248e82ebeb54068b22bcc39330254d4553
