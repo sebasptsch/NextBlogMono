@@ -24,7 +24,8 @@ steps:
     commands:
       - "yarn install --frozen-lockfile --production --ignore-scripts --ignore-engines"
 
-  - name: "Build Keystone"
+  - name: Build Keystone
+    failure: ignore
     pull: if-not-exists
     image: node:lts-buster
     environment:
@@ -35,7 +36,8 @@ steps:
     commands:
       - "yarn build:keystone"
 
-  - name: "Build Frontend"
+  - name: Build Frontend
+    failure: ignore
     pull: if-not-exists
     image: node:lts-buster
     environment:
@@ -74,10 +76,7 @@ steps:
       branch:
         - main
       event:
-        include:
-          - "promotion"
-        exclude:
-          - pull_request
+        - promote
     settings:
       build_args_from_env:
         - SESSION_SECRET
@@ -100,10 +99,7 @@ steps:
       branch:
         - main
       event:
-        include:
-          - "promotion"
-        exclude:
-          - pull_request
+        - promote
     settings:
       build_args_from_env:
         - GRAPHQL_ENDPOINT
