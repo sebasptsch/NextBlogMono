@@ -30,7 +30,7 @@ steps:
       pull: true
       tags:
         - latest
-        - $DRONE_COMMIT
+        - ${DRONE_COMMIT}
       registry: ghcr.io
       dockerfile: keystone.Dockerfile
 trigger:
