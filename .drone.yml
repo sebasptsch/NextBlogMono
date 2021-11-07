@@ -124,4 +124,6 @@ volumes:
       path: /tmp/cache
 ---
 kind: signature
-hmac: 51829803c451aafe3f6b9ddb1096718889a1a91405e1bfbd2e6749c96e3478d7
+hmac: 6ea9b75ac8e2700083d64cd645ef789d1fa85d7eb1014a8182ed9662154a0d9d
+
+...
