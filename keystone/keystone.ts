@@ -11,7 +11,6 @@ import lists from "./schema";
 // Keystone auth is configured separately - check out the basic auth setup we are importing from our auth file.
 import { withAuth, session } from "./auth";
 import express from "express";
-import { startsWith } from "lodash";
 export default withAuth(
   // Using the config function helps typescript guide you to the available options.
   config({
@@ -39,16 +38,12 @@ export default withAuth(
       ],
       // For our starter, we check that someone has session data before letting them see the Admin UI.
       isAccessAllowed: (context) => !!context.session?.data,
-      publicPages: ["/images"],
-    },
-    graphql: {
-      apolloConfig: {
-        introspection: process.env.NODE_ENV !== "production",
-      },
+      publicPages: ["/images", "/schema.graphql"],
     },
     server: {
       extendExpressApp: (app) => {
         app.use("/images", express.static("config/images"));
+        app.use("/schema.graphql", express.static("schema.graphql"));
       },
       port: 3002,
       healthCheck: {

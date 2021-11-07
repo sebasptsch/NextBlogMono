@@ -4,7 +4,6 @@ RUN apt-get install openssl -y -qq
 WORKDIR /app
 ENV PRISMA_CLI_QUERY_ENGINE_TYPE=binary
 ENV PRISMA_CLIENT_ENGINE_TYPE=binary
-RUN ls
 COPY ./package.json  ./
 COPY ./yarn.lock  ./
 COPY  ./keystone/package.json ./keystone/package.json
@@ -17,6 +16,7 @@ RUN apt-get install openssl -y -qq
 ENV PRISMA_CLI_QUERY_ENGINE_TYPE=binary
 ENV PRISMA_CLIENT_ENGINE_TYPE=binary
 WORKDIR /app
+ARG NODE_ENV
 COPY . .
 COPY --from=dependencies /app/node_modules ./node_modules
 RUN yarn build:keystone
@@ -36,7 +36,7 @@ COPY  --from=builder /app/package.json ./package.json
 
 ENV PRISMA_CLI_QUERY_ENGINE_TYPE=binary
 ENV PRISMA_CLIENT_ENGINE_TYPE=binary
-ENV NODE_ENV=production
+ARG NODE_ENV
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV DATABASE_URL=file:./config/keystone.db
 EXPOSE 3000

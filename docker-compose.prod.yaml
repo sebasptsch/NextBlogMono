@@ -9,21 +9,28 @@ services:
       context: ./
       dockerfile: frontend.Dockerfile
       args:
-        GRAPHQL_ENDPOINT: https://cms.sebasptsch.dev/api/graphql
+        GRAPHQL_ENDPOINT: http://cms:3002/api/graphql
     networks:
       - blog
     ports:
       - "3001:3000"
+    env_file: frontend/.env.production.local
   cms:
     container_name: cms
     build:
       context: ./
       dockerfile: keystone.Dockerfile
+      args:
+        NODE_ENV: production
     ports:
       - "3002:3002"
     networks:
       - blog
     volumes:
-      - ./keystone/config:/app/keystone/config
+      - db:/app/keystone/config
+    env_file: keystone/.env.production.local
 networks:
   blog:
+
+volumes:
+  db:

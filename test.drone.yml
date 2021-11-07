@@ -1,0 +1,165 @@
+kind: pipeline
+name: Build and Publish CMS
+type: docker
+
+steps:
+  # - name: Docker Login
+  #   environment:
+  #     GITHUB_TOKEN:
+  #       from_secret: github_token
+  #     GITHUB_USERNAME:
+  #       from_secret: github_username
+  #   commands:
+  #     - docker login ghcr.io -u $${GITHUB_USERNAME} -p $${GITHUB_TOKEN}
+  # - name: Pull existing
+  #   failure: "ignore"
+  #   depends_on:
+  #     - "Docker Login"
+  #   commands:
+  #     - docker pull ghcr.io/sebasptsch/nextcms
+  # - name: Build
+  #   depends_on:
+  #     - "Pull existing"
+  #   commands:
+  #     - docker build --rm=false -f keystone.Dockerfile -t ${DRONE_COMMIT} . --target production --label org.opencontainers.image.revision=${DRONE_COMMIT} --label org.opencontainers.image.source=${DRONE_REMOTE_URL} --label org.opencontainers.image.url=${DRONE_REPO}
+  # - name: Push Latest
+  #   depends_on:
+  #     - "Build"
+  #   commands:
+  #     - docker tag ${DRONE_COMMIT} ghcr.io/sebasptsch/nextcms:latest
+  #     - docker push ghcr.io/sebasptsch/nextcms:latest
+  # - name: Push Commit
+  #   depends_on:
+  #     - "Build"
+  #   commands:
+  #     - docker tag ${DRONE_COMMIT} ghcr.io/sebasptsch/nextcms:${DRONE_COMMIT}
+  #     - docker push ghcr.io/sebasptsch/nextcms:${DRONE_COMMIT}
+  - name: Publish
+    image: plugins/docker
+    when:
+      branch:
+        - main
+      event:
+        exclude:
+          - pull_request
+    pull: if-not-exists
+    settings:
+      purge: true
+      cache_from: ghcr.io/sebasptsch/nextcms
+      target: production
+      build_args:
+        - NODE_ENV=production
+      username:
+        from_secret: github_username
+      password:
+        from_secret: github_token
+      repo: ghcr.io/sebasptsch/nextcms
+      auto_tag: false
+      pull: true
+      tags:
+        - latest
+        - ${DRONE_COMMIT}
+      registry: ghcr.io
+      dockerfile: keystone.Dockerfile
+trigger:
+  event:
+    exclude:
+      - promote
+---
+kind: pipeline
+name: Build and Publish Frontend
+type: docker
+
+steps:
+  # - name: Docker Login
+  #   environment:
+  #     GITHUB_TOKEN:
+  #       from_secret: github_token
+  #     GITHUB_USERNAME:
+  #       from_secret: github_username
+  #   commands:
+  #     - docker login ghcr.io -u $${GITHUB_USERNAME} -p $${GITHUB_TOKEN}
+  # - name: Pull existing
+  #   failure: "ignore"
+  #   depends_on:
+  #     - "Docker Login"
+  #   commands:
+  #     - docker pull ghcr.io/sebasptsch/nextblog
+  # - name: Build
+  #   depends_on:
+  #     - "Pull existing"
+  #   commands:
+  #     - docker build -f keystone.Dockerfile -t ${DRONE_COMMIT} . --target production --label org.opencontainers.image.revision=${DRONE_COMMIT} --label org.opencontainers.image.source=${DRONE_REMOTE_URL} --label org.opencontainers.image.url=${DRONE_REPO} --build-arg GRAPHQL_ENDPOINT="https://cms.sebasptsch.dev/api/graphql"
+  # - name: Push Latest
+  #   depends_on:
+  #     - "Build"
+  #   commands:
+  #     - docker tag ${DRONE_COMMIT} ghcr.io/sebasptsch/nextblog:latest
+  #     - docker push ghcr.io/sebasptsch/nextblog:latest
+  # - name: Push Commit
+  #   depends_on:
+  #     - "Build"
+  #   commands:
+  #     - docker tag ${DRONE_COMMIT} ghcr.io/sebasptsch/nextblog:${DRONE_COMMIT}
+  #     - docker push ghcr.io/sebasptsch/nextblog:${DRONE_COMMIT}
+  - name: Build and Publish
+    image: plugins/docker
+    environment:
+      GRAPHQL_ENDPOINT: https://cms.sebasptsch.dev/api/graphql
+      DRONE_COMMIT: $DRONE_COMMIT
+    when:
+      branch:
+        - main
+      event:
+        exclude:
+          - pull_request
+    pull: if-not-exists
+    settings:
+      purge: true
+      cache_from: ghcr.io/sebasptsch/nextblog
+      target: production
+      pull: true
+      username:
+        from_secret: github_username
+      password:
+        from_secret: github_token
+      repo: ghcr.io/sebasptsch/nextblog
+      registry: ghcr.io
+      auto_tag: false
+      tags:
+        - latest
+        - ${DRONE_COMMIT}
+      dockerfile: frontend.Dockerfile
+      build_args:
+        - GRAPHQL_ENDPOINT=https://cms.sebasptsch.dev/api/graphql
+        - NODE_ENV=production
+trigger:
+  event:
+    exclude:
+      - promote
+---
+kind: pipeline
+type: docker
+name: Deploy
+steps:
+  - name: Deploy Using Ansible
+    image: plugins/ansible
+    pull: if-not-exists
+    environment:
+      GRAPHQL_ENDPOINT: https://cms.sebasptsch.dev/api/graphql
+      SESSION_SECRET:
+        from_secret: SESSION_SECRET
+    settings:
+      playbook: .ansible/playbook.yml
+      ssh_extra_args:
+        - "-o StrictHostKeyChecking=no"
+      galaxy: .ansible/requirements.yml
+      inventory: .ansible/inventory
+      user: sebas
+      private_key:
+        from_secret: ansible_private_key
+trigger:
+  event:
+    - promote
+  target:
+    - production

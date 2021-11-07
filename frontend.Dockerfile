@@ -11,6 +11,7 @@ FROM node:lts-buster-slim as builder
 RUN apt-get update
 RUN apt-get install openssl -y -qq
 ARG GRAPHQL_ENDPOINT
+ARG NODE_ENV
 WORKDIR /app
 COPY . .
 COPY --from=dependencies /app/node_modules ./node_modules
@@ -28,7 +29,7 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/frontend/package.json ./frontend/package.json
 COPY --from=builder /app/frontend/next.config.js ./frontend/next.config.js
-ENV NODE_ENV=production
+ARG NODE_ENV
 ENV NEXT_TELEMETRY_DISABLED=1
 
 EXPOSE 3000
