@@ -18,35 +18,41 @@ steps:
 
   - name: Install Dependencies
     pull: if-not-exists
-    image: node:lts-buster
+    image: node:lts-buster-slim
     depends_on:
       - "Restore Cache"
     commands:
+      - apt-get update
+      - apt-get install openssl -y -qq
       - "yarn install --frozen-lockfile --production --ignore-scripts --ignore-engines"
 
   - name: Build Keystone
     failure: ignore
     pull: if-not-exists
-    image: node:lts-buster
+    image: node:lts-buster-slim
     environment:
       SESSION_SECRET:
         from_secret: SESSION_SECRET
     depends_on:
-      - "Install Dependencies"
+      - Install Dependencies
     commands:
-      - "yarn build:keystone"
+      - apt-get update
+      - apt-get install openssl -y -qq
+      - yarn build:keystone
 
   - name: Build Frontend
     failure: ignore
     pull: if-not-exists
-    image: node:lts-buster
+    image: node:lts-buster-slim
     environment:
       GRAPHQL_ENDPOINT:
         from_secret: GRAPHQL_ENDPOINT
     depends_on:
       - "Install Dependencies"
     commands:
-      - "yarn build:frontend"
+      - apt-get update
+      - apt-get install openssl -y -qq
+      - yarn build:frontend
 
   - name: Rebuild Cache
     pull: if-not-exists
@@ -100,6 +106,7 @@ steps:
         - main
       event:
         - promote
+
     settings:
       build_args_from_env:
         - GRAPHQL_ENDPOINT
@@ -117,4 +124,6 @@ volumes:
       path: /tmp/cache
 ---
 kind: signature
-hmac: 1497fbc9dd7eaab7442a5578e719e7b6bff8514ad9b1ae313be42c92eb05fdf8
+hmac: 51829803c451aafe3f6b9ddb1096718889a1a91405e1bfbd2e6749c96e3478d7
+
+...
