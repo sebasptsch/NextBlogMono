@@ -24,7 +24,7 @@ steps:
     commands:
       - apt-get update
       - apt-get install openssl -y -qq
-      - "yarn install --frozen-lockfile --production --ignore-scripts --ignore-engines"
+      - "yarn install --frozen-lockfile --production"
 
   - name: Build Keystone
     failure: ignore
@@ -125,5 +125,3 @@ volumes:
 ---
 kind: signature
 hmac: 51829803c451aafe3f6b9ddb1096718889a1a91405e1bfbd2e6749c96e3478d7
-
-...
