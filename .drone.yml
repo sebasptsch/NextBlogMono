@@ -22,7 +22,7 @@ steps:
     depends_on:
       - "Restore Cache"
     commands:
-      - "yarn install --frozen-lockfile --production"
+      - "yarn install --frozen-lockfile --production --ignore-scripts --ignore-engines"
 
   - name: "Build Keystone"
     pull: if-not-exists

@@ -7,7 +7,7 @@ ENV PRISMA_CLIENT_ENGINE_TYPE=binary
 COPY ./package.json  ./
 COPY ./yarn.lock  ./
 COPY  ./keystone/package.json ./keystone/package.json
-RUN yarn install --frozen-lockfile --production
+RUN yarn install --frozen-lockfile --production --ignore-scripts --ignore-engines
 
 
 FROM node:lts-buster-slim as builder
