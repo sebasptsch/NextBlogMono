@@ -24,8 +24,7 @@ steps:
     commands:
       - apt-get update
       - apt-get install openssl -y -qq
-      - "yarn install --frozen-lockfile --production  --ignore-scripts"
-
+      - yarn install --frozen-lockfile --production
   - name: Build Keystone
     failure: ignore
     pull: if-not-exists
@@ -123,4 +122,4 @@ volumes:
       path: /tmp/cache
 ---
 kind: signature
-hmac: 6ea9b75ac8e2700083d64cd645ef789d1fa85d7eb1014a8182ed9662154a0d9d
+hmac: d85889a5df11868070185d449cb76d149829910e215c11c3d2290d841e21fe2e
