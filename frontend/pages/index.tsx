@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Center,
+  Container,
   Heading,
   HStack,
   IconButton,
@@ -24,15 +25,15 @@ export default function Home({
   const [search, setSearch] = useState("");
   const { colorMode, toggleColorMode } = useColorMode();
   return (
-    <>
+    <Container maxW="container.xl">
       <NextSeo
         title="Sebastian Pietschner - Developer and Student"
         description="My personal site that I use to develop and share new skills and projects."
         titleTemplate="%s"
       />
 
-      <Stack direction={["column", "row"]} height="100vh">
-        <Center p={4} w={[null, "50%"]}>
+      <Stack direction={["column", "row", "row", "row"]} height="100vh">
+        <Center w={[null, "50%", "50%", "50%"]}>
           <Box textAlign="center">
             <Heading as="h1" mt={2} mb={2}>
               Sebastian Pietschner - Developer and Student
@@ -69,7 +70,10 @@ export default function Home({
           </Box>
         </Center>
 
-        <Box p={4} w={[null, "50%"]} overflowY={[null, "scroll"]}>
+        <Box
+          w={[null, "50%", "50%", "50%"]}
+          overflowY={[null, "scroll", "scroll", "scroll"]}
+        >
           <Center mt={10} mb={10}>
             <Heading size="lg">Recent Posts</Heading>
           </Center>
@@ -96,7 +100,7 @@ export default function Home({
           </Stack>
         </Box>
       </Stack>
-    </>
+    </Container>
   );
 }
 
