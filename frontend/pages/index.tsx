@@ -8,8 +8,6 @@ import {
   Heading,
   HStack,
   IconButton,
-  Input,
-  InputGroup,
   Stack,
   useColorMode,
 } from "@chakra-ui/react";
@@ -70,33 +68,11 @@ export default function Home({
           </Box>
         </Center>
 
-        <Box
-          w={[null, "50%", "50%", "50%"]}
-          overflowY={[null, "scroll", "scroll", "scroll"]}
-        >
-          <Center mt={10} mb={10}>
-            <Heading size="lg">Recent Posts</Heading>
-          </Center>
-
-          <InputGroup>
-            <Input
-              placeholder="Search"
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
-              }}
-              variant="filled"
-              size="lg"
-            />
-          </InputGroup>
-          <Stack>
-            {posts
-              .filter((post) =>
-                post.title.toLowerCase().includes(search.toLowerCase())
-              )
-              .map((post) => {
-                return <BlogPost {...post} key={post.id} />;
-              })}
+        <Box w={[null, "50%", "50%", "50%"]}>
+          <Stack overflowY={[null, "scroll", "scroll", "scroll"]} height="100%">
+            {posts.map((post) => {
+              return <BlogPost {...post} key={post.id} />;
+            })}
           </Stack>
         </Box>
       </Stack>
