@@ -31,6 +31,7 @@ export default function Home({
       <NextSeo
         title="Sebastian Pietschner - Developer and Student"
         description="My personal site that I use to develop and share new skills and projects."
+        titleTemplate="%s"
       />
       <Center height="100vh">
         <Box textAlign="center">

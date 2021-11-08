@@ -60,6 +60,20 @@ export type IdFilter = {
   notIn?: Maybe<Array<Scalars['ID']>>;
 };
 
+export type Image = {
+  __typename?: 'Image';
+  alt?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  image?: Maybe<ImageFieldOutput>;
+  label?: Maybe<Scalars['String']>;
+};
+
+export type ImageCreateInput = {
+  alt?: Maybe<Scalars['String']>;
+  image?: Maybe<ImageFieldInput>;
+  label?: Maybe<Scalars['String']>;
+};
+
 export enum ImageExtension {
   Gif = 'gif',
   Jpg = 'jpg',
@@ -80,6 +94,36 @@ export type ImageFieldOutput = {
   ref: Scalars['String'];
   url: Scalars['String'];
   width: Scalars['Int'];
+};
+
+export type ImageOrderByInput = {
+  alt?: Maybe<OrderDirection>;
+  id?: Maybe<OrderDirection>;
+  label?: Maybe<OrderDirection>;
+};
+
+export type ImageUpdateArgs = {
+  data: ImageUpdateInput;
+  where: ImageWhereUniqueInput;
+};
+
+export type ImageUpdateInput = {
+  alt?: Maybe<Scalars['String']>;
+  image?: Maybe<ImageFieldInput>;
+  label?: Maybe<Scalars['String']>;
+};
+
+export type ImageWhereInput = {
+  AND?: Maybe<Array<ImageWhereInput>>;
+  NOT?: Maybe<Array<ImageWhereInput>>;
+  OR?: Maybe<Array<ImageWhereInput>>;
+  alt?: Maybe<StringFilter>;
+  id?: Maybe<IdFilter>;
+  label?: Maybe<StringFilter>;
+};
+
+export type ImageWhereUniqueInput = {
+  id?: Maybe<Scalars['ID']>;
 };
 
 export type KeystoneAdminMeta = {
@@ -196,6 +240,8 @@ export type LocalImageFieldOutput = ImageFieldOutput & {
 export type Mutation = {
   __typename?: 'Mutation';
   authenticateUserWithPassword?: Maybe<UserAuthenticationWithPasswordResult>;
+  createImage?: Maybe<Image>;
+  createImages?: Maybe<Array<Maybe<Image>>>;
   createInitialUser: UserAuthenticationWithPasswordSuccess;
   createPost?: Maybe<Post>;
   createPosts?: Maybe<Array<Maybe<Post>>>;
@@ -203,6 +249,8 @@ export type Mutation = {
   createTags?: Maybe<Array<Maybe<Tag>>>;
   createUser?: Maybe<User>;
   createUsers?: Maybe<Array<Maybe<User>>>;
+  deleteImage?: Maybe<Image>;
+  deleteImages?: Maybe<Array<Maybe<Image>>>;
   deletePost?: Maybe<Post>;
   deletePosts?: Maybe<Array<Maybe<Post>>>;
   deleteTag?: Maybe<Tag>;
@@ -210,6 +258,8 @@ export type Mutation = {
   deleteUser?: Maybe<User>;
   deleteUsers?: Maybe<Array<Maybe<User>>>;
   endSession: Scalars['Boolean'];
+  updateImage?: Maybe<Image>;
+  updateImages?: Maybe<Array<Maybe<Image>>>;
   updatePost?: Maybe<Post>;
   updatePosts?: Maybe<Array<Maybe<Post>>>;
   updateTag?: Maybe<Tag>;
@@ -222,6 +272,16 @@ export type Mutation = {
 export type MutationAuthenticateUserWithPasswordArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
+};
+
+
+export type MutationCreateImageArgs = {
+  data: ImageCreateInput;
+};
+
+
+export type MutationCreateImagesArgs = {
+  data: Array<ImageCreateInput>;
 };
 
 
@@ -260,6 +320,16 @@ export type MutationCreateUsersArgs = {
 };
 
 
+export type MutationDeleteImageArgs = {
+  where: ImageWhereUniqueInput;
+};
+
+
+export type MutationDeleteImagesArgs = {
+  where: Array<ImageWhereUniqueInput>;
+};
+
+
 export type MutationDeletePostArgs = {
   where: PostWhereUniqueInput;
 };
@@ -287,6 +357,17 @@ export type MutationDeleteUserArgs = {
 
 export type MutationDeleteUsersArgs = {
   where: Array<UserWhereUniqueInput>;
+};
+
+
+export type MutationUpdateImageArgs = {
+  data: ImageUpdateInput;
+  where: ImageWhereUniqueInput;
+};
+
+
+export type MutationUpdateImagesArgs = {
+  data: Array<ImageUpdateArgs>;
 };
 
 
@@ -462,6 +543,9 @@ export type Post_Content_DocumentDocumentArgs = {
 export type Query = {
   __typename?: 'Query';
   authenticatedItem?: Maybe<AuthenticatedItem>;
+  image?: Maybe<Image>;
+  images?: Maybe<Array<Image>>;
+  imagesCount?: Maybe<Scalars['Int']>;
   keystone: KeystoneMeta;
   post?: Maybe<Post>;
   posts?: Maybe<Array<Post>>;
@@ -472,6 +556,24 @@ export type Query = {
   user?: Maybe<User>;
   users?: Maybe<Array<User>>;
   usersCount?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryImageArgs = {
+  where: ImageWhereUniqueInput;
+};
+
+
+export type QueryImagesArgs = {
+  orderBy?: Array<ImageOrderByInput>;
+  skip?: Scalars['Int'];
+  take?: Maybe<Scalars['Int']>;
+  where?: ImageWhereInput;
+};
+
+
+export type QueryImagesCountArgs = {
+  where?: ImageWhereInput;
 };
 
 
@@ -840,7 +942,7 @@ export const PostDocument = gql`
     }
     readingtime
     content {
-      document
+      document(hydrateRelationships: true)
     }
   }
 }

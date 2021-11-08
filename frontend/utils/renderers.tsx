@@ -2,6 +2,7 @@ import { NextChakraLink } from "@/components/NextChakra";
 import {
   Box,
   Button,
+  Center,
   Heading,
   ListItem,
   OrderedList,
@@ -10,6 +11,8 @@ import {
   useClipboard,
 } from "@chakra-ui/react";
 import { DocumentRendererProps } from "@keystone-next/document-renderer";
+import Image from "next/image";
+import React from "react";
 import Gist from "react-gist";
 import { Tweet } from "react-static-tweets";
 import SyntaxHighlighter from "react-syntax-highlighter";
@@ -47,6 +50,26 @@ export const componentBlockRenderers = {
 export const renderers: DocumentRendererProps["renderers"] = {
   // use your editor's autocomplete to see what other renderers you can override
   inline: {
+    relationship({ relationship, data }) {
+      if (relationship === "image") {
+        if (data === null || data.data === undefined) {
+          console.log(data);
+          return <span>Unknown Image</span>;
+        } else {
+          return (
+            <Center>
+              <Image
+                src={data.data.image.url}
+                width={data.data.image.width}
+                height={data.data.image.height}
+                alt={data.data.alt}
+              />
+            </Center>
+          );
+        }
+      }
+      return null;
+    },
     bold: ({ children }) => {
       return <strong>{children}</strong>;
     },

@@ -83,6 +83,14 @@ export const Post = list({
         views: require.resolve("../componentBlocks"),
       },
       componentBlocks: { ...componentBlocks },
+      relationships: {
+        image: {
+          kind: "inline",
+          listKey: "Image",
+          label: "Image",
+          selection: "id label image { url height width } alt",
+        },
+      },
     }),
   },
   hooks: {

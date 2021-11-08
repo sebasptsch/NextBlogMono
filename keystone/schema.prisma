@@ -50,3 +50,15 @@ model User {
   password String
   posts    Post[] @relation("Post_author")
 }
+
+model Image {
+  id              String  @id @default(cuid())
+  image_filesize  Int?
+  image_extension String?
+  image_width     Int?
+  image_height    Int?
+  image_mode      String?
+  image_id        String?
+  alt             String  @default("")
+  label           String  @default("")
+}
