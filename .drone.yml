@@ -46,9 +46,6 @@ steps:
     failure: ignore
     pull: if-not-exists
     image: node:lts-buster-slim
-    environment:
-      GRAPHQL_ENDPOINT:
-        from_secret: GRAPHQL_ENDPOINT
     depends_on:
       - Install Dependencies
     commands:
@@ -100,17 +97,12 @@ steps:
     image: plugins/docker
     depends_on:
       - "Build Frontend"
-    environment:
-      GRAPHQL_ENDPOINT:
-        from_secret: GRAPHQL_ENDPOINT
     when:
       branch:
         - main
       event:
         - promote
     settings:
-      build_args_from_env:
-        - GRAPHQL_ENDPOINT
       username:
         from_secret: github_username
       password:
@@ -126,5 +118,3 @@ volumes:
 ---
 kind: signature
 hmac: f7c66c2833aeb07bd28f71c896360177584c156525e5b843e1f8f031e6daa51d
-
-...

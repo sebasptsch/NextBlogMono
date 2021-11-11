@@ -3,7 +3,6 @@ WORKDIR /app
 # RUN apk add libc6-compat
 RUN apt-get update
 RUN apt-get install openssl -y -qq
-ARG GRAPHQL_ENDPOINT
 COPY ./frontend/public ./frontend/public
 COPY ./frontend/.next ./frontend/.next
 COPY ./node_modules ./node_modules
