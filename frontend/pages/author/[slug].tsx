@@ -41,7 +41,7 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     },
   };
   const { user }: AuthorQuery = await request(
-    "http://localhost:3000/api/graphql",
+    "http://cms:3002/api/graphql",
     AuthorDocument,
     variables
   );

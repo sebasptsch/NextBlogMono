@@ -22,7 +22,7 @@ const Post = ({
 
 export async function getStaticPaths(): Promise<GetStaticPathsResult> {
   const { posts }: PostPathsQuery = await request(
-    "http://localhost:3000/api/graphql",
+    "http://cms:3002/api/graphql",
     PostPathsDocument
   );
 
