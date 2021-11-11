@@ -44,7 +44,9 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     },
   };
   const { post }: PostQuery = await request(
-    "http://localhost:3000/api/graphql",
+    process.env.NODE_ENV === "production"
+      ? "http://cms:3002/api/graphql"
+      : "http://localhost:3002/api/graphql",
     PostDocument,
     variables
   );
