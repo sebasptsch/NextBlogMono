@@ -20,7 +20,7 @@ const Tag = ({ user }: InferGetStaticPropsType<typeof getStaticProps>) => (
 export async function getStaticPaths(): Promise<GetStaticPathsResult> {
   const { users }: AuthorPathsQuery = await request(
     process.env.NODE_ENV === "production"
-      ? "http://cms:3002/api/graphql"
+      ? "https://cms.sebasptsch.dev/api/graphql"
       : "http://localhost:3002/api/graphql",
     AuthorPathsDocument
   );
@@ -43,7 +43,9 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     },
   };
   const { user }: AuthorQuery = await request(
-    "http://cms:3002/api/graphql",
+    process.env.NODE_ENV === "production"
+      ? "https://cms.sebasptsch.dev/api/graphql"
+      : "http://localhost:3000/api/graphql",
     AuthorDocument,
     variables
   );

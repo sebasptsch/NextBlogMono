@@ -22,7 +22,7 @@ const Post = ({
 
 export async function getStaticPaths(): Promise<GetStaticPathsResult> {
   const { posts }: PostPathsQuery = await request(
-    "http://cms:3002/api/graphql",
+    "https://cms.sebasptsch.dev/api/graphql",
     PostPathsDocument
   );
 
@@ -45,8 +45,8 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
   };
   const { post }: PostQuery = await request(
     process.env.NODE_ENV === "production"
-      ? "http://cms:3002/api/graphql"
-      : "http://localhost:3002/api/graphql",
+      ? "https://cms.sebasptsch.dev/api/graphql"
+      : "http://localhost:3000/api/graphql",
     PostDocument,
     variables
   );

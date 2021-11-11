@@ -14,8 +14,8 @@ module.exports = withPlaiceholder({
         source: "/api/graphql",
         destination:
           process.env.NODE_ENV === "production"
-            ? "http://cms:3002/api/graphql"
-            : "http://localhost:3002/api/graphql",
+            ? "https://cms.sebasptsch.dev/api/graphql"
+            : "http://localhost:3000/api/graphql",
       },
     ];
   },
