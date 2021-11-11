@@ -56,7 +56,6 @@ steps:
     image: node:lts-buster-slim
     depends_on:
       - Install Dependencies
-      - cms
     commands:
       - apt-get update
       - apt-get install openssl -y -qq
