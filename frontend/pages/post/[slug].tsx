@@ -22,7 +22,7 @@ const Post = ({
 
 export async function getStaticPaths(): Promise<GetStaticPathsResult> {
   const { posts }: PostPathsQuery = await request(
-    process.env.GRAPHQL_ENDPOINT,
+    "http://localhost:3000/api/graphql",
     PostPathsDocument
   );
 
@@ -44,7 +44,7 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
     },
   };
   const { post }: PostQuery = await request(
-    process.env.GRAPHQL_ENDPOINT,
+    "http://localhost:3000/api/graphql",
     PostDocument,
     variables
   );

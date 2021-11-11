@@ -8,4 +8,15 @@ module.exports = withPlaiceholder({
   images: {
     domains: ["pbs.twimg.com", "cms.sebasptsch.dev", "localhost"],
   },
+  async rewrites() {
+    return [
+      {
+        source: "/api/graphql",
+        destination:
+          process.env.NODE_ENV === "production"
+            ? "http://cms:3002/api/graphql"
+            : "http://localhost:3002/api/graphql",
+      },
+    ];
+  },
 });

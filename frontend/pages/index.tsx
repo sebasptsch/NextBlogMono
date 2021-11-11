@@ -82,7 +82,7 @@ export default function Home({
 
 export async function getStaticProps() {
   const { posts }: AllPostsQuery = await request(
-    process.env.GRAPHQL_ENDPOINT,
+    "http://localhost:3000/api/graphql",
     AllPostsDocument
   );
   return { props: { posts }, revalidate: 10 };
