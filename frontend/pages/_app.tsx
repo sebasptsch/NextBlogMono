@@ -1,5 +1,6 @@
 import { Chakra } from "@/utils/chakra";
 import { DefaultSeo, SocialProfileJsonLd } from "next-seo";
+import { NextScript } from "next/document";
 import React from "react";
 import "react-static-tweets/styles.css";
 
@@ -27,6 +28,24 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
       />
       <Component {...pageProps} />
       {/* </SessionProvider> */}
+      <NextScript>
+        {
+      `(function(d,t) {
+        var BASE_URL="https://chat.sebasptsch.dev";
+        var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+        g.src=BASE_URL+"/packs/js/sdk.js";
+        g.defer = true;
+        g.async = true;
+        s.parentNode.insertBefore(g,s);
+        g.onload=function(){
+          window.chatwootSDK.run({
+            websiteToken: 'd8XEBQR66PMkAVXPMXuSLn1y',
+            baseUrl: BASE_URL
+          })
+        }
+      })(document,"script");`
+    }
+      </NextScript>
     </Chakra>
   );
 }
