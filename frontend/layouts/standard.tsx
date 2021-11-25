@@ -46,8 +46,13 @@ const Standard = ({ children }) => {
             </HStack>
           </Box>
         </Center>
-
-        <Box w={[null, "50%", "50%", "50%"]}>{children}</Box>
+        <Box
+          w={[null, "50%", "50%", "50%"]}
+          overflowY={[null, "scroll", "scroll", "scroll"]}
+          height="100%"
+        >
+          {children}
+        </Box>
       </Stack>
     </>
   );

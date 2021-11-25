@@ -17,7 +17,7 @@ export default function Home({
         description="My personal site that I use to develop and share new skills and projects."
         titleTemplate="%s"
       />
-      <Stack overflowY={[null, "scroll", "scroll", "scroll"]} height="100%">
+      <Stack>
         {posts.map((post) => {
           return <BlogPost {...post} key={post.id} />;
         })}
