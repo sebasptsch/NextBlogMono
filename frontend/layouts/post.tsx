@@ -1,4 +1,3 @@
-import Layout from "@/components/Layout";
 import { PostQuery } from "@/utils/gql/query";
 import { componentBlockRenderers, renderers } from "@/utils/renderers";
 import { Flex, Heading, Spacer } from "@chakra-ui/layout";
@@ -7,6 +6,7 @@ import moment from "moment";
 import { ArticleJsonLd, NextSeo } from "next-seo";
 import Image from "next/image";
 import Link from "next/link";
+import Standard from "./standard";
 
 export default function PostLayout({
   post,
@@ -23,7 +23,7 @@ export default function PostLayout({
 }) {
   const { title, summary, published_at, slug, author, readingtime } = post;
   return (
-    <Layout>
+    <Standard>
       <NextSeo
         title={title}
         description={summary}
@@ -54,7 +54,6 @@ export default function PostLayout({
         publisherName="Seb's Blog"
         publisherLogo="https://sebasptsch.dev/logo.png"
       />
-
       <Heading pt="1em" mb="0.5em" as="h1">
         {title}
       </Heading>
@@ -76,6 +75,6 @@ export default function PostLayout({
         renderers={renderers}
         componentBlocks={componentBlockRenderers}
       />
-    </Layout>
+    </Standard>
   );
 }

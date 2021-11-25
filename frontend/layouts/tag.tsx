@@ -1,14 +1,14 @@
 import BlogPost from "@/components/BlogPost";
-import Layout from "@/components/Layout";
 import { TagQuery } from "@/utils/gql/query";
 import { Box, Heading, Stack, Text } from "@chakra-ui/layout";
 import { NextSeo } from "next-seo";
 import React from "react";
+import Standard from "./standard";
 
 const TagLayout = ({ tag }: TagQuery) => {
   const { description, name, posts } = tag;
   return (
-    <Layout>
+    <Standard>
       <NextSeo
         noindex
         title={name}
@@ -21,12 +21,12 @@ const TagLayout = ({ tag }: TagQuery) => {
         </Heading>
         {description ? <Text as="h2">{description}</Text> : null}
       </Box>
-      <Stack>
+      <Stack overflowY={[null, "scroll", "scroll", "scroll"]} height="100%">
         {posts.map((post) => (
           <BlogPost {...post} key={post.id} />
         ))}
       </Stack>
-    </Layout>
+    </Standard>
   );
 };
 export default TagLayout;
