@@ -21,7 +21,7 @@ const TagLayout = ({ tag }: TagQuery) => {
         </Heading>
         {description ? <Text as="h2">{description}</Text> : null}
       </Box>
-      <Stack overflowY={[null, "scroll", "scroll", "scroll"]} height="100%">
+      <Stack>
         {posts.map((post) => (
           <BlogPost {...post} key={post.id} />
         ))}

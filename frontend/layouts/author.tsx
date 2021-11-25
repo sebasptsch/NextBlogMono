@@ -17,7 +17,7 @@ export default function AuthorLayout({ user }: AuthorQuery) {
         </Heading>
         {bio ? <Text as="h2">{bio}</Text> : null}
       </Box>
-      <Stack overflowY={[null, "scroll", "scroll", "scroll"]} height="100%">
+      <Stack>
         {posts.map((post) => (
           <BlogPost {...post} key={post.id} />
         ))}

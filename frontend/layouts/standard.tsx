@@ -1,7 +1,6 @@
 import { Button, IconButton } from "@chakra-ui/button";
 import { useColorMode } from "@chakra-ui/color-mode";
 import { Box, Center, Heading, HStack, Stack } from "@chakra-ui/layout";
-import { Container } from "@chakra-ui/react";
 import React from "react";
 import { FaGithub, FaMoon, FaSun, FaTwitter } from "react-icons/fa";
 
@@ -51,8 +50,9 @@ const Standard = ({ children }) => {
           w={[null, "50%", "50%", "50%"]}
           overflowY={[null, "scroll", "scroll", "scroll"]}
           height="100%"
+          p={2}
         >
-          <Container>{children}</Container>
+          {children}
         </Box>
       </Stack>
     </>
