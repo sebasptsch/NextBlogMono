@@ -1,9 +1,0 @@
-overwrite: true
-schema: "keystone/schema.graphql"
-documents: "frontend/utils/gql/**/*.graphql"
-generates:
-  frontend/utils/gql/query.ts:
-    plugins:
-      - "typescript"
-      - "typescript-operations"
-      - "typescript-graphql-request"

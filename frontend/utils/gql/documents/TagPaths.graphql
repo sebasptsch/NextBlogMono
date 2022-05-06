@@ -1,5 +1,0 @@
-query TagPaths {
-  tags {
-    slug
-  }
-}
